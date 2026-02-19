@@ -1,0 +1,29 @@
+[project]
+name = "personal-ai-employee"
+version = "0.1.0"
+description = "Personal AI Employee - Bronze Tier"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "watchdog>=6.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+gmail = [
+    "google-auth>=2.0.0",
+    "google-auth-oauthlib>=1.0.0",
+    "google-api-python-client>=2.0.0",
+]
+browser = [
+    "playwright>=1.40.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

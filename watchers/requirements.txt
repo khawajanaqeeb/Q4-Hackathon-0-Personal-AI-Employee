@@ -1,0 +1,11 @@
+# Core requirements (always needed)
+watchdog>=6.0.0
+python-dotenv>=1.0.0
+
+# Gmail watcher (optional)
+# google-auth>=2.0.0
+# google-auth-oauthlib>=1.0.0
+# google-api-python-client>=2.0.0
+
+# WhatsApp watcher (optional, Silver tier)
+# playwright>=1.40.0

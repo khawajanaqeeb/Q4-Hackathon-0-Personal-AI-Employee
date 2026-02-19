@@ -1,0 +1,25 @@
+# Secrets — never commit
+.env
+watchers/credentials.json
+watchers/token.json
+AI_Employee_Vault/.gmail_state.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.uv/
+
+# Logs (optional — you may want to track these)
+# AI_Employee_Vault/Logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Obsidian (workspace is user-specific, but .obsidian config should be tracked)
+AI_Employee_Vault/.obsidian/workspace.json

@@ -1,0 +1,77 @@
+[
+  {
+    "timestamp": "2026-02-20T02:44:39.952047",
+    "event_type": "watcher_started",
+    "actor": "FileSystemWatcher",
+    "watching": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault/Inbox",
+    "dry_run": true
+  },
+  {
+    "timestamp": "2026-02-20T02:45:43.439190",
+    "event_type": "watcher_started",
+    "actor": "FileSystemWatcher",
+    "watching": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault/Inbox",
+    "dry_run": false
+  },
+  {
+    "timestamp": "2026-02-20T02:45:47.094762",
+    "event_type": "file_dropped",
+    "actor": "FileSystemWatcher",
+    "source_file": "invoice_client_a.txt",
+    "destination": "FILE_20260220_024546_invoice_client_a.txt",
+    "action_file": "FILE_20260220_024546_invoice_client_a.md",
+    "priority": "P1",
+    "result": "action_file_created"
+  },
+  {
+    "timestamp": "2026-02-20T02:00:01Z",
+    "event_type": "inbox_reviewed",
+    "actor": "claude_code",
+    "file": "invoice_client_a.txt",
+    "priority": "P1",
+    "action_taken": "plan_created + approval_requested",
+    "plan_file": "Plans/PLAN_invoice_client_a.md",
+    "approval_file": "Pending_Approval/APPROVAL_invoice_client_a_2026-02-20.md",
+    "result": "awaiting_human_approval"
+  },
+  {
+    "timestamp": "2026-02-20T02:00:02Z",
+    "event_type": "inbox_reviewed",
+    "actor": "claude_code",
+    "file": "task-test.md",
+    "priority": "P3",
+    "action_taken": "acknowledged + archived",
+    "plan_file": "Plans/PLAN_task_test.md",
+    "result": "moved_to_done"
+  },
+  {
+    "timestamp": "2026-02-20T03:09:00Z",
+    "event_type": "approval_granted",
+    "actor": "human",
+    "approval_file": "APPROVAL_invoice_client_a_2026-02-20.md",
+    "action": "send_invoice",
+    "client": "Client A",
+    "amount": 1500.0,
+    "approval_status": "approved",
+    "approved_by": "human"
+  },
+  {
+    "timestamp": "2026-02-20T03:09:01Z",
+    "event_type": "invoice_generated",
+    "actor": "claude_code",
+    "invoice_number": "INV-2026-001",
+    "client": "Client A",
+    "amount": 1500.0,
+    "invoice_file": "Invoices/INV-2026-001_Client_A.md",
+    "result": "ready_to_send"
+  },
+  {
+    "timestamp": "2026-02-20T03:09:02Z",
+    "event_type": "transaction_logged",
+    "actor": "claude_code",
+    "invoice_number": "INV-2026-001",
+    "amount": 1500.0,
+    "log_file": "Accounting/2026-02_transactions.md",
+    "result": "success"
+  }
+]
