@@ -73,5 +73,145 @@
     "amount": 1500.0,
     "log_file": "Accounting/2026-02_transactions.md",
     "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T15:40:55.682397",
+    "event_type": "orchestrator_started",
+    "actor": "Orchestrator",
+    "vault": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault",
+    "dry_run": true,
+    "scheduling": false
+  },
+  {
+    "timestamp": "2026-02-20T15:56:13.357892",
+    "event_type": "watcher_started",
+    "actor": "FileSystemWatcher",
+    "watching": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault/Inbox",
+    "dry_run": false
+  },
+  {
+    "timestamp": "2026-02-20T15:56:56.427494",
+    "event_type": "orchestrator_started",
+    "actor": "Orchestrator",
+    "vault": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault",
+    "dry_run": false,
+    "scheduling": true
+  },
+  {
+    "timestamp": "2026-02-20T15:59:22.968035",
+    "event_type": "file_dropped",
+    "actor": "FileSystemWatcher",
+    "source_file": "PLAN_task_test.md",
+    "destination": "FILE_20260220_155922_PLAN_task_test.md",
+    "action_file": "FILE_20260220_155922_PLAN_task_test.md",
+    "priority": "P3",
+    "result": "action_file_created"
+  },
+  {
+    "timestamp": "2026-02-20T16:03:52.944408",
+    "event_type": "file_dropped",
+    "actor": "FileSystemWatcher",
+    "source_file": "task-test.md",
+    "destination": "FILE_20260220_160352_task-test.md",
+    "action_file": "FILE_20260220_160352_task-test.md",
+    "priority": "P3",
+    "result": "action_file_created"
+  },
+  {
+    "timestamp": "2026-02-20T16:04:41.590282",
+    "event_type": "generic_approved",
+    "actor": "Orchestrator",
+    "file": "2026-02_transactions.md"
+  },
+  {
+    "timestamp": "2026-02-20T16:05:16.724271",
+    "event_type": "generic_approved",
+    "actor": "Orchestrator",
+    "file": "task-test.md"
+  },
+  {
+    "timestamp": "2026-02-20T15:46:00Z",
+    "event_type": "process_inbox_started",
+    "actor": "claude_code",
+    "skill": "/process-inbox",
+    "items_found": 3
+  },
+  {
+    "timestamp": "2026-02-20T15:46:30Z",
+    "event_type": "item_processed",
+    "actor": "claude_code",
+    "file": "FILE_20260220_024546_invoice_client_a.md",
+    "priority": "P1",
+    "type": "file_drop",
+    "action_taken": "email_approval_created",
+    "approval_file": "Pending_Approval/EMAIL_INV-2026-001_Client_A_20260220.md",
+    "result": "awaiting_human_approval"
+  },
+  {
+    "timestamp": "2026-02-20T15:46:45Z",
+    "event_type": "item_processed",
+    "actor": "claude_code",
+    "file": "FILE_20260220_155922_PLAN_task_test.md",
+    "priority": "P3",
+    "type": "file_drop",
+    "action_taken": "archived_stale_duplicate",
+    "result": "moved_to_done"
+  },
+  {
+    "timestamp": "2026-02-20T15:46:50Z",
+    "event_type": "item_processed",
+    "actor": "claude_code",
+    "file": "FILE_20260220_160352_task-test.md",
+    "priority": "P3",
+    "type": "file_drop",
+    "action_taken": "archived_test_file",
+    "result": "moved_to_done"
+  },
+  {
+    "timestamp": "2026-02-20T15:47:00Z",
+    "event_type": "process_inbox_completed",
+    "actor": "claude_code",
+    "skill": "/process-inbox",
+    "items_processed": 3,
+    "approvals_created": 1,
+    "archived": 2,
+    "urgent_items": 0,
+    "dashboard_updated": true
+  },
+  {
+    "timestamp": "2026-02-20T16:27:46.529354",
+    "event_type": "scheduled_process-inbox",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T16:58:02.441806",
+    "event_type": "scheduled_update-dashboard",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T16:58:53.741254",
+    "event_type": "scheduled_process-inbox",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T17:29:36.672555",
+    "event_type": "scheduled_process-inbox",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T17:59:17.045840",
+    "event_type": "scheduled_update-dashboard",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T18:01:03.731863",
+    "event_type": "scheduled_process-inbox",
+    "actor": "Orchestrator",
+    "result": "success"
   }
 ]

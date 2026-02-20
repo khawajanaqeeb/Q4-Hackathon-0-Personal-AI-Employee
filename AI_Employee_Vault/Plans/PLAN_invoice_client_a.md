@@ -32,7 +32,7 @@ Process the January 2026 invoice request for Client A ($1,500) — draft it and 
 - [x] Transaction logged → Accounting/2026-02_transactions.md
 - [x] Dashboard.md updated
 - [x] Source file moved to /Done
-- [ ] Send via Email MCP → requires Silver Tier setup
+- [ ] Send via Email MCP → approval created in /Pending_Approval/EMAIL_INV-2026-001_Client_A_20260220.md (Silver Tier ready)
 
 ## Draft Invoice Details
 
