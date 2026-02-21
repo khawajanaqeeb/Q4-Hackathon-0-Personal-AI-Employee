@@ -213,5 +213,200 @@
     "event_type": "scheduled_process-inbox",
     "actor": "Orchestrator",
     "result": "success"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:58.345801",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c787a9c5470d54",
+    "from": "LottieFiles <hello@lottiefiles.com>",
+    "subject": "LottieFiles goes beyond Lottie \ud83d\ude80",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:58.364413",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212558_19c787a9.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:59.020273",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19b606b16bd35d88",
+    "from": "Binance <do-not-reply@ses.binance.com>",
+    "subject": "[Binance] Successful Password Reset from 202.47.51.174 - 2025-12-27 15:26:28(UTC)",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:59.041217",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212559_19b606b1.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:59.584658",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19b26a0783303376",
+    "from": "Cursor Team <hi@mail.cursor.com>",
+    "subject": "Now in Cursor: Web Layout Editor and Debug Mode",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:25:59.598525",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212559_19b26a07.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:00.258480",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19aaaaa15d3d8d05",
+    "from": "pdfFiller <noreply@pdffiller.com>",
+    "subject": "Forget the deals. Invest in productivity.",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:00.280293",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212600_19aaaaa1.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:00.944511",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19a96d7f305ef364",
+    "from": "Kaneez Hasan <kaneez.hasan@akesp.org>",
+    "subject": "ADMIT CARD FOR 1st TERM EXAMINATION 2025-26",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:00.962268",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212600_19a96d7f.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:01.610759",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "199fe16c16949159",
+    "from": "Yahoo <no-reply@cc.yahoo.com>",
+    "subject": "Your Yahoo verification code is 484567",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:01.623225",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212601_199fe16c.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:02.285401",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "199e41940afa3f83",
+    "from": "Microsoft account team <account-security-noreply@accountprotection.microsoft.com>",
+    "subject": "Microsoft account security info was added",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:02.299577",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212602_199e4194.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:02.855208",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "199be23bcf1f8a33",
+    "from": "Khawaja Naqeeb Uddin <naqeebkns@gmail.com>",
+    "subject": "Photo from naqeebkns",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:02.876471",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212602_199be23b.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:11.437534",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "199b677f8cf52918",
+    "from": "Cryptofleet <no-reply@cryptofleet.io>",
+    "subject": "Pool Risk Free has started",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:11.454575",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212611_199b677f.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:03.771774",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "199b62895541347e",
+    "from": "Cryptofleet <no-reply@cryptofleet.io>",
+    "subject": "Pool Risk Free has started",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:26:03.800181",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212603_199b6289.md"
+  },
+  {
+    "timestamp": "2026-02-20T21:27:53.769335",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c7be02637f4afb",
+    "from": "Khawaja Naqeeb Uddin <naqeebkns@gmail.com>",
+    "subject": "Hi",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T21:27:53.813024",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_212753_19c7be02.md"
+  },
+  {
+    "timestamp": "2026-02-20T22:26:25.613929",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c7c16402549bfa",
+    "from": "LinkedIn <security-noreply@linkedin.com>",
+    "subject": "Khawaja Naqeeb, please verify your new device",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T22:26:25.660737",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_222625_19c7c164.md"
+  },
+  {
+    "timestamp": "2026-02-20T22:30:05.162417",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c7c1852f7d1d35",
+    "from": "LinkedIn <security-noreply@linkedin.com>",
+    "subject": "Khawaja Naqeeb, your password was successfully reset",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-20T22:30:05.182283",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260220_223005_19c7c185.md"
   }
 ]

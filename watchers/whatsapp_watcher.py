@@ -35,6 +35,13 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent))
 from base_watcher import BaseWatcher
 
+# Load .env from project root
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",

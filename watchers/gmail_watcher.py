@@ -93,7 +93,16 @@ class GmailWatcher(BaseWatcher):
                     flow = InstalledAppFlow.from_client_secrets_file(
                         str(self.credentials_path), SCOPES
                     )
-                    creds = flow.run_local_server(port=0)
+                    # WSL2: disable auto browser-open (gio/xdg-open unavailable).
+                    # A local callback server starts on a random port — copy the
+                    # printed URL into your Windows browser to complete auth.
+                    # localhost ports are forwarded from Windows → WSL2 automatically.
+                    print("\n" + "="*60)
+                    print("ACTION REQUIRED: Open the URL below in your Windows browser.")
+                    print("After authorising, the page will redirect to localhost")
+                    print("and the token will be saved automatically.")
+                    print("="*60 + "\n")
+                    creds = flow.run_local_server(port=0, open_browser=False)
                 self.token_path.write_text(creds.to_json())
 
             self.service = build("gmail", "v1", credentials=creds)

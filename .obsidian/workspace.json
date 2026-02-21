@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI_Employee_Vault/Dashboard.md",
+                "file": "AI_Employee_Vault/Approved/EMAIL_INV-2026-001_Client_A_20260220.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Dashboard"
+              "title": "EMAIL_INV-2026-001_Client_A_20260220"
             }
           }
         ],
@@ -200,6 +200,12 @@
   },
   "active": "6983913ff391ad3f",
   "lastOpenFiles": [
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260220_223005_19c7c185.md",
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260220_222625_19c7c164.md",
+    "AI_Employee_Vault/Dashboard.md",
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260220_212753_19c7be02.md",
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260220_212558_19c787a9.md",
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260220_212559_19b26a07.md",
     "watchers/requirements.txt.tmp.996.1771593468823",
     "watchers/credentials.json",
     "watchers/credentials.json.json",
@@ -211,12 +217,11 @@
     "AI_Employee_Vault/Done/FILE_20260220_024546_invoice_client_a.txt",
     "AI_Employee_Vault/Done/FILE_20260220_024546_invoice_client_a.md",
     "AI_Employee_Vault/Plans/PLAN_invoice_client_a.md.tmp.996.1771585634731",
-    "AI_Employee_Vault/Pending_Approval/EMAIL_INV-2026-001_Client_A_20260220.md",
+    "AI_Employee_Vault/Approved/EMAIL_INV-2026-001_Client_A_20260220.md",
     "AI_Employee_Vault/Done/task-test.md",
     "AI_Employee_Vault/Approved/2026-02_transactions.md",
     "AI_Employee_Vault/Done/2026-02_transactions.md",
     "AI_Employee_Vault/Needs_Action/FILE_20260220_160352_task-test.md",
-    "AI_Employee_Vault/Dashboard.md",
     "AI_Employee_Vault/Business_Goals.md",
     "AI_Employee_Vault/Needs_Action/FILE_20260220_155922_PLAN_task_test.md",
     "task-4.md",
@@ -224,17 +229,12 @@
     "orchestrator.py.tmp.996.1771583981751",
     "orchestrator.py.tmp.996.1771583976943",
     "watchers/__pycache__/gmail_watcher.cpython-312.pyc",
-    "logs",
     "AI_Employee_Vault/Done/task-2.md",
     "README.md",
     "AI_Employee_Vault/Done/APPROVAL_invoice_client_a_2026-02-20_APPROVED.md",
     "AI_Employee_Vault/Invoices/INV-2026-001_Client_A.md",
     "AI_Employee_Vault/Plans/PLAN_invoice_client_a.md",
     "AI_Employee_Vault/Approved/task-test.md",
-    "AI_Employee_Vault/Approved/APPROVAL_invoice_client_a_2026-02-20.md",
-    "Personal AI Employee Hackathon 0_ Building Autonomous FTEs in 2026.md",
-    "CLAUDE.md",
-    "AI_Employee_Vault/Approved/task-test.md",
-    "AI_Employee_Vault/Needs_Action/FILE_20260220_024546_invoice_client_a.md"
+    "AI_Employee_Vault/Approved/APPROVAL_invoice_client_a_2026-02-20.md"
   ]
 }

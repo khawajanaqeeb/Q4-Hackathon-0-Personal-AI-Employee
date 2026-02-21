@@ -41,6 +41,13 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent))
 from base_watcher import BaseWatcher
 
+# Load .env from project root
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -111,11 +118,11 @@ class LinkedInWatcher(BaseWatcher):
         ids_list = list(self.processed_ids)[-500:]
         state_file.write_text(json.dumps(ids_list))
 
-    def _get_browser_context(self, playwright):
+    def _get_browser_context(self, playwright, headless: bool = True):
         """Launch (or resume) a persistent Chromium browser session."""
         return playwright.chromium.launch_persistent_context(
             str(self.session_path),
-            headless=True,
+            headless=headless,
             args=["--no-sandbox", "--disable-dev-shm-usage"],
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -124,12 +131,39 @@ class LinkedInWatcher(BaseWatcher):
             ),
         )
 
+    def setup_session(self):
+        """
+        Interactive setup: launches a visible browser so the user can
+        log in and complete any 2FA/CAPTCHA. Saves the session for
+        future headless runs.
+        """
+        sync_playwright = _load_playwright()
+        self.logger.info("Opening LinkedIn in visible browser for login/2FA...")
+        self.logger.info(f"Session will be saved to: {self.session_path}")
+        self.logger.info("Log in and complete any verification, then press Ctrl+C.")
+
+        with sync_playwright() as p:
+            context = self._get_browser_context(p, headless=False)
+            page = context.pages[0] if context.pages else context.new_page()
+            page.goto("https://www.linkedin.com/login", timeout=15000)
+
+            try:
+                # Wait until user reaches the feed (logged in successfully)
+                page.wait_for_url("**/feed/**", timeout=120000)
+                self.logger.info("LinkedIn session established successfully!")
+            except Exception:
+                self.logger.warning("Timed out waiting for login. Try again.")
+            finally:
+                context.close()
+
     def _is_logged_in(self, page) -> bool:
         """Check if the current session is authenticated to LinkedIn."""
         try:
             page.goto("https://www.linkedin.com/feed/", timeout=15000)
             page.wait_for_load_state("domcontentloaded", timeout=10000)
-            return "feed" in page.url
+            # Must be on the feed page itself, not redirected to login
+            # (login redirect URL contains "feed" in query params, so check the path)
+            return page.url.startswith("https://www.linkedin.com/feed")
         except Exception:
             return False
 
@@ -527,6 +561,11 @@ Environment variables:
         action="store_true",
         help="Run one check then exit (useful for cron)",
     )
+    parser.add_argument(
+        "--setup",
+        action="store_true",
+        help="Run interactive setup to log in and complete 2FA (requires display)",
+    )
     args = parser.parse_args()
 
     vault_path = Path(args.vault).resolve()
@@ -536,6 +575,12 @@ Environment variables:
 
     if args.dry_run:
         os.environ["DRY_RUN"] = "true"
+
+    # -- Setup mode: interactive login + 2FA --
+    if args.setup:
+        watcher = LinkedInWatcher(str(vault_path), args.session_path, dry_run=args.dry_run)
+        watcher.setup_session()
+        sys.exit(0)
 
     # -- Post mode: publish a pre-approved LinkedIn post --
     if args.post_file:
