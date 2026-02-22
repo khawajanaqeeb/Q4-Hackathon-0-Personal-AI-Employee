@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-02-20 15:47
+last_updated: 2026-02-22 00:00
 auto_refresh: true
 owner: AI Employee v0.1
 ---
@@ -15,9 +15,9 @@ owner: AI Employee v0.1
 | Metric | Value |
 |--------|-------|
 | Needs Action | 0 items |
-| Pending Approval | 1 item |
-| Done This Week | 6 tasks |
-| Active Plans | 1 active, 3 closed |
+| Pending Approval | 4 items |
+| Done This Week | 19 tasks |
+| Active Plans | 2 active, 3 closed |
 | Invoiced (MTD) | $1,500.00 |
 
 ---
@@ -26,8 +26,11 @@ owner: AI Employee v0.1
 
 - **Items in /Inbox:** 0 files (cleared)
 - **Items in /Needs_Action:** 0 actionable files ✅ Clear
-- **Items in /Pending_Approval:** 1 — awaiting your review 👤
+- **Items in /Pending_Approval:** 4 — awaiting your review 👤
   - `EMAIL_INV-2026-001_Client_A_20260220.md` — Invoice email to client_a@email.com ($1,500)
+  - `APPROVAL_SECURITY_Binance_PasswordReset_20260222.md` — Security: Verify Binance password reset (Dec 27, 2025)
+  - `APPROVAL_SECURITY_LinkedIn_NewDevice_20260222.md` — Security: Verify LinkedIn new device login (Feb 20, 2026)
+  - `APPROVAL_SECURITY_LinkedIn_PasswordReset_20260222.md` — Security: Verify LinkedIn password reset (Feb 20, 2026)
 
 ---
 
@@ -35,6 +38,11 @@ owner: AI Employee v0.1
 
 | Time | Event | Detail |
 |------|-------|--------|
+| 2026-02-22 00:00 | 📬 Inbox processed | 13 emails triaged — 10 archived, 3 security alerts flagged |
+| 2026-02-22 00:00 | 🔐 Security flag | Binance password reset (Dec 27) → Pending_Approval |
+| 2026-02-22 00:00 | 🔐 Security flag | LinkedIn new device (Feb 20) → Pending_Approval |
+| 2026-02-22 00:00 | 🔐 Security flag | LinkedIn password reset (Feb 20) → Pending_Approval |
+| 2026-02-22 00:00 | 🗂️ Archived | 10 newsletters/personal/no-action emails → Done |
 | 2026-02-20 15:47 | 📧 Email approval created | EMAIL_INV-2026-001 → Pending_Approval/ (Silver Tier email send ready) |
 | 2026-02-20 15:47 | 🗂️ P3 files archived | FILE_PLAN_task_test + FILE_task-test → Done/ (stale files) |
 | 2026-02-20 15:47 | 📋 Inbox processed | 3 items reviewed — 1 approval created, 2 archived |
@@ -49,6 +57,7 @@ owner: AI Employee v0.1
 
 | Plan | Priority | Status |
 |------|----------|--------|
+| [PLAN_process_inbox_20260222.md](Plans/PLAN_process_inbox_20260222.md) | P1 | ✅ Completed |
 | [PLAN_invoice_client_a.md](Plans/PLAN_invoice_client_a.md) | P1 | ⏳ Awaiting email send approval |
 | [PLAN_inbox_triage_20260220.md](Plans/PLAN_inbox_triage_20260220.md) | P3 | ✅ Completed |
 | [PLAN_task_test.md](Plans/PLAN_task_test.md) | P3 | ✅ Completed |
@@ -60,6 +69,9 @@ owner: AI Employee v0.1
 | File | Action | Amount | Expires |
 |------|--------|--------|---------|
 | `EMAIL_INV-2026-001_Client_A_20260220.md` | Send invoice email to client_a@email.com | $1,500 | 2026-02-21 |
+| `APPROVAL_SECURITY_Binance_PasswordReset_20260222.md` | Verify Binance password reset from IP 202.47.51.174 | — | 2026-02-25 |
+| `APPROVAL_SECURITY_LinkedIn_NewDevice_20260222.md` | Verify LinkedIn new device login | — | 2026-02-24 |
+| `APPROVAL_SECURITY_LinkedIn_PasswordReset_20260222.md` | Verify LinkedIn password reset | — | 2026-02-24 |
 
 **To approve:** Move file from `/Pending_Approval/` → `/Approved/`
 **To review:** Run `/approve-pending` in Claude Code

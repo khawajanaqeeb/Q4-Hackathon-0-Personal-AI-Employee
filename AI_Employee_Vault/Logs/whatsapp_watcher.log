@@ -1,0 +1,346 @@
+2026-02-22 02:48:46 [WhatsAppWatcher] INFO: Starting WhatsAppWatcher (interval: 30s)
+2026-02-22 02:52:28 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 02:52:28 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 02:54:37 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 02:54:37 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 02:56:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 02:56:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 02:58:32 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 02:58:32 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:00:40 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:00:40 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:02:39 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:02:39 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:04:44 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:04:44 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:07:01 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:07:01 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:09:16 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:09:16 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:11:12 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:11:12 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:13:26 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:13:26 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:15:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:15:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:17:55 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:17:55 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:20:05 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:20:05 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:22:15 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:22:15 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:25:38 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:25:38 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:27:46 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:27:46 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:29:55 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:29:55 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:32:13 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:32:13 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:34:18 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:34:18 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:36:24 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:36:24 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:38:32 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:38:32 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:40:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:40:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:42:32 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:42:32 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:44:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:44:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:46:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:46:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:48:32 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:48:32 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:50:30 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:50:30 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:52:31 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:52:31 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:54:28 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:54:28 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:56:28 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:56:28 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 03:58:26 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 03:58:26 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:00:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:00:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:02:20 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:02:20 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:04:17 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:04:17 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:06:13 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:06:13 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:08:07 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:08:07 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:10:09 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:10:09 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:12:04 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:12:04 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:13:58 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:13:58 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:15:51 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:15:51 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:17:46 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:17:46 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:19:42 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:19:42 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:21:38 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:21:38 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:23:32 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:23:32 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:25:39 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:25:39 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:28:11 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:28:11 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:30:25 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:30:25 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:32:27 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:32:27 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:34:26 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:34:26 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:36:27 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:36:27 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:38:22 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:38:22 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:40:17 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:40:17 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:42:11 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:42:11 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:44:05 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:44:05 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:46:00 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:46:00 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:47:54 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:47:54 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:49:49 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:49:49 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:51:48 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:51:48 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:53:42 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:53:42 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:55:38 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:55:38 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:57:34 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:57:34 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 04:59:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 04:59:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:01:37 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:01:37 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:03:33 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:03:33 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:05:57 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:05:57 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:07:52 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:07:52 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:09:46 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:09:46 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.
+2026-02-22 05:11:39 [WhatsAppWatcher] WARNING: WhatsApp scrape failed: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("#side, [data-testid=\"chat-list\"], [aria-label=\"Chat list\"]") to be visible
+
+2026-02-22 05:11:39 [WhatsAppWatcher] INFO: If this is the first run, use --setup to scan the QR code.

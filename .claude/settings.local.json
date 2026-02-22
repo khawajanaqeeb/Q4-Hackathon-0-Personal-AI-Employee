@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(pm2 start:*)",
+      "Bash(bash scripts/setup_cron.sh)"
+    ]
+  }
+}

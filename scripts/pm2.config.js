@@ -80,27 +80,45 @@ module.exports = {
       out_file: path.join(ROOT, "logs", "fs-watcher-out.log"),
     },
 
-    // ── LinkedIn Watcher (monitor + post to LinkedIn) ─────────────────────────
+    // ── Gmail Watcher ─────────────────────────────────────────────────────────
     {
-      name: "linkedin-watcher",
+      name: "gmail-watcher",
       script: PYTHON,
-      args: `watchers/linkedin_watcher.py --vault ${VAULT}`,
+      args: `watchers/gmail_watcher.py --vault ${VAULT}`,
       cwd: ROOT,
       interpreter: "none",
-      restart_delay: 10000,   // 10-second delay (LinkedIn is rate-sensitive)
-      max_restarts: 5,
+      restart_delay: 5000,
+      max_restarts: 10,
       autorestart: true,
       watch: false,
       env: {
-        LINKEDIN_EMAIL: envOrDefault("LINKEDIN_EMAIL", ""),
-        LINKEDIN_PASSWORD: envOrDefault("LINKEDIN_PASSWORD", ""),
-        LINKEDIN_SESSION_PATH: envOrDefault("LINKEDIN_SESSION_PATH", path.join(ROOT, ".linkedin_session")),
+        GMAIL_CREDENTIALS_PATH: envOrDefault("GMAIL_CREDENTIALS_PATH", path.join(ROOT, "watchers/credentials.json")),
+        GMAIL_TOKEN_PATH: envOrDefault("GMAIL_TOKEN_PATH", path.join(ROOT, "watchers/token.json")),
         DRY_RUN: envOrDefault("DRY_RUN", "false"),
       },
       log_date_format: "YYYY-MM-DD HH:mm:ss",
-      error_file: path.join(ROOT, "logs", "linkedin-watcher-error.log"),
-      out_file: path.join(ROOT, "logs", "linkedin-watcher-out.log"),
+      error_file: path.join(ROOT, "logs", "gmail-watcher-error.log"),
+      out_file: path.join(ROOT, "logs", "gmail-watcher-out.log"),
     },
+
+    // ── LinkedIn Watcher — ON HOLD (re-enable when LinkedIn account is ready) ──
+    // {
+    //   name: "linkedin-watcher",
+    //   script: PYTHON,
+    //   args: `watchers/linkedin_watcher.py --vault ${VAULT}`,
+    //   cwd: ROOT,
+    //   interpreter: "none",
+    //   restart_delay: 10000,
+    //   max_restarts: 5,
+    //   autorestart: true,
+    //   watch: false,
+    //   env: {
+    //     LINKEDIN_EMAIL: envOrDefault("LINKEDIN_EMAIL", ""),
+    //     LINKEDIN_PASSWORD: envOrDefault("LINKEDIN_PASSWORD", ""),
+    //     LINKEDIN_SESSION_PATH: envOrDefault("LINKEDIN_SESSION_PATH", path.join(ROOT, ".linkedin_session")),
+    //     DRY_RUN: envOrDefault("DRY_RUN", "false"),
+    //   },
+    // },
 
     // ── WhatsApp Watcher ──────────────────────────────────────────────────────
     // NOTE: Run --setup manually first to scan the QR code.
