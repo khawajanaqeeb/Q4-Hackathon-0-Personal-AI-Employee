@@ -479,5 +479,33 @@
     "actor": "Orchestrator",
     "file": "LINKEDIN_POST_2026-02-22.md",
     "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:10:28.033747",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:15:11.137040",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:20:10.119707",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:25:18.721953",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
   }
 ]
