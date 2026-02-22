@@ -38,6 +38,8 @@ owner: AI Employee v0.1
 
 | Time | Event | Detail |
 |------|-------|--------|
+| 2026-02-22 15:02 | ✅ WhatsApp Watcher fixed | QR scanned, session saved, monitoring active |
+| 2026-02-22 10:00 | 📝 LinkedIn post drafted | Behind-the-Scenes post → Pending_Approval/ (awaiting your review) |
 | 2026-02-22 00:00 | 📬 Inbox processed | 13 emails triaged — 10 archived, 3 security alerts flagged |
 | 2026-02-22 00:00 | 🔐 Security flag | Binance password reset (Dec 27) → Pending_Approval |
 | 2026-02-22 00:00 | 🔐 Security flag | LinkedIn new device (Feb 20) → Pending_Approval |
@@ -84,8 +86,8 @@ owner: AI Employee v0.1
 |-----------|--------|
 | File System Watcher | ✅ Tested & working |
 | Gmail Watcher | ⚙️ Ready (needs credentials) |
-| LinkedIn Watcher | ⚙️ Ready (needs credentials) |
-| WhatsApp Watcher | ⚙️ Ready (run --setup for QR) |
+| LinkedIn Watcher | ✅ Active (credentials set, session ready) |
+| WhatsApp Watcher | ✅ Active (session live, QR scanned) |
 | Orchestrator | ✅ Running |
 | Email MCP Server | ✅ Ready (needs SMTP config) |
 | Obsidian Vault | ✅ Ready |

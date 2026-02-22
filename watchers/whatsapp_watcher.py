@@ -146,67 +146,124 @@ class WhatsAppWatcher(BaseWatcher):
             viewport={"width": 1280, "height": 900},
         )
 
+    # Selectors that indicate WhatsApp Web is fully loaded and logged in
+    CHAT_LIST_SELECTORS = (
+        '#side, '
+        '[data-testid="chat-list"], '
+        '[aria-label="Chat list"], '
+        'div[role="grid"], '
+        '[data-testid="default-user"], '
+        'header[data-testid="chatlist-header"]'
+    )
+
+    # Selectors that indicate a QR code is being shown (not logged in)
+    QR_SELECTORS = (
+        '[data-testid="qrcode"], '
+        'canvas[aria-label="Scan me!"], '
+        '[data-ref], '
+        '[data-testid="intro-title"]'
+    )
+
+    def _is_showing_qr(self, page) -> bool:
+        """Return True if the page is showing a QR code (not logged in)."""
+        try:
+            return page.evaluate(
+                f"""() => !!(
+                    document.querySelector('[data-testid="qrcode"]') ||
+                    document.querySelector('canvas[aria-label="Scan me!"]') ||
+                    document.querySelector('[data-ref]') ||
+                    document.querySelector('[data-testid="intro-title"]')
+                )"""
+            )
+        except Exception:
+            return False
+
+    def _is_logged_in(self, page) -> bool:
+        """Return True if WhatsApp Web chat list is visible."""
+        try:
+            return page.evaluate(
+                """() => !!(
+                    document.querySelector('#side') ||
+                    document.querySelector('[data-testid="chat-list"]') ||
+                    document.querySelector('[aria-label="Chat list"]') ||
+                    document.querySelector('header[data-testid="chatlist-header"]') ||
+                    document.querySelector('div[role="grid"]')
+                )"""
+            )
+        except Exception:
+            return False
+
     def setup_session(self):
         """
         Interactive setup: launches a visible browser so the user can
         scan the WhatsApp QR code. Saves the session for future headless runs.
-
-        Strategy: Wait for QR code to disappear (login happened), then wait
-        30 seconds for the session to fully sync before saving.
         """
         sync_playwright = _load_playwright()
         self.logger.info("Opening WhatsApp Web for QR code scan...")
         self.logger.info(f"Session will be saved to: {self.session_path}")
+        self.logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         self.logger.info("1. A browser window will open on your desktop.")
-        self.logger.info("2. Scan the QR code with WhatsApp on your phone.")
-        self.logger.info("3. Wait for the chats to load, then press Ctrl+C to save and exit.")
+        self.logger.info("2. Open WhatsApp on your phone.")
+        self.logger.info("3. Go to Settings → Linked Devices → Link a Device.")
+        self.logger.info("4. Scan the QR code shown in the browser.")
+        self.logger.info("5. Wait for your chats to appear — script exits automatically.")
+        self.logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
         with sync_playwright() as p:
             context = self._get_browser_context(p, headless=False)
             page = context.pages[0] if context.pages else context.new_page()
             page.goto("https://web.whatsapp.com", timeout=60000)
-            self.logger.info("Browser opened. Waiting for QR code to appear...")
+            self.logger.info("Browser opened. Checking login state...")
 
             try:
-                # Step 1: Wait for the QR code to appear
-                try:
-                    page.wait_for_selector(
-                        '[data-testid="qrcode"], canvas[aria-label="Scan me!"], [data-ref]',
-                        timeout=20000,
-                    )
-                    self.logger.info("QR code visible — scan it with your phone now.")
-                except Exception:
-                    self.logger.info("QR code not detected (may already be logged in). Continuing...")
+                # Give the page time to load fully
+                time.sleep(5)
 
-                # Step 2: Wait for REAL login — only #side or chat-list count
-                # (avoids false positives from the loading/QR page)
+                if self._is_logged_in(page):
+                    self.logger.info("Already logged in! Waiting 15 seconds for session sync...")
+                    time.sleep(15)
+                    self.logger.info("WhatsApp session confirmed and saved.")
+                    context.close()
+                    return
+
+                if self._is_showing_qr(page):
+                    self.logger.info("QR code visible — scan it with WhatsApp on your phone now.")
+                else:
+                    self.logger.info("WhatsApp is loading... waiting for QR code or chat list.")
+
+                # Poll every 3 seconds for up to 5 minutes
                 logged_in = False
-                self.logger.info("Waiting for you to scan the QR code and chats to load...")
-                for _ in range(60):  # 60 x 5s = 5 minutes
-                    time.sleep(5)
+                for attempt in range(100):  # 100 x 3s = 5 minutes
+                    time.sleep(3)
                     try:
-                        has_chats = page.evaluate(
-                            """() => !!(
-                                document.querySelector('#side') ||
-                                document.querySelector('[data-testid="chat-list"]') ||
-                                document.querySelector('[aria-label="Chat list"]')
-                            )"""
-                        )
-                        if has_chats:
-                            self.logger.info("Chats loaded! Waiting 60 seconds for full session sync...")
-                            time.sleep(60)  # Let WhatsApp fully write session to disk
+                        if self._is_logged_in(page):
+                            self.logger.info(
+                                f"✓ Logged in after {attempt * 3}s! "
+                                "Waiting 30 seconds for full session sync..."
+                            )
+                            time.sleep(30)
                             logged_in = True
                             break
+                        elif attempt % 10 == 9:  # Every 30s remind the user
+                            self.logger.info(
+                                f"Still waiting for QR scan... ({attempt * 3}s elapsed)"
+                            )
                     except Exception:
                         continue
 
                 if logged_in:
                     self.logger.info("WhatsApp session saved successfully!")
+                    self.logger.info(f"Session stored at: {self.session_path}")
                 else:
                     self.logger.warning(
-                        "Could not confirm login. If you see your chats in the browser, "
-                        "press Ctrl+C to save and exit — the session may still be usable."
+                        "5 minutes elapsed without detecting login. "
+                        "If you see your chats in the browser, press Ctrl+C — "
+                        "the session may still be usable."
                     )
+                    # Wait for Ctrl+C
+                    while True:
+                        time.sleep(5)
+
             except KeyboardInterrupt:
                 self.logger.info("Ctrl+C pressed — saving session and exiting.")
             finally:
@@ -221,25 +278,52 @@ class WhatsAppWatcher(BaseWatcher):
             if "whatsapp.com" not in page.url:
                 page.goto("https://web.whatsapp.com", timeout=60000)
 
-            # Wait for chat list (already open — should be fast)
-            page.wait_for_selector(
-                '#side, [data-testid="chat-list"], [aria-label="Chat list"]',
-                timeout=60000,
+            # Wait for chat list with broad fallback selectors
+            page.wait_for_selector(self.CHAT_LIST_SELECTORS, timeout=60000)
+
+            # Find unread chats — try multiple selector strategies
+            unread_chats = page.query_selector_all(
+                # Current WhatsApp Web selectors
+                '[data-testid="cell-frame-container"]:has([data-testid="icon-unread-count"]), '
+                '[role="listitem"]:has([data-testid="icon-unread-count"]), '
+                # Fallback: any chat row with an unread badge span
+                'div[role="row"]:has([data-testid="icon-unread-count"]), '
+                'li:has([data-testid="icon-unread-count"])'
             )
 
-            # Find unread chats
-            unread_chats = page.query_selector_all(
-                '[data-testid="cell-frame-container"]:has([data-testid="icon-unread-count"]),'
-                '[role="listitem"]:has([data-testid="icon-unread-count"])'
-            )
+            self.logger.debug(f"Found {len(unread_chats)} unread chat(s).")
 
             for chat in unread_chats[:10]:
                 try:
-                    title_el = chat.query_selector('[data-testid="cell-frame-title"]')
-                    sender = title_el.inner_text().strip() if title_el else "Unknown"
+                    # Sender name — try multiple selectors
+                    sender = "Unknown"
+                    for sel in [
+                        '[data-testid="cell-frame-title"]',
+                        'span[title]',
+                        '[aria-label] span',
+                        'span._ao3e',  # WhatsApp internal class (fallback)
+                    ]:
+                        el = chat.query_selector(sel)
+                        if el:
+                            text = el.get_attribute("title") or el.inner_text()
+                            if text and text.strip():
+                                sender = text.strip()
+                                break
 
-                    body_el = chat.query_selector('[data-testid="last-msg"]')
-                    preview = body_el.inner_text().strip() if body_el else ""
+                    # Message preview — try multiple selectors
+                    preview = ""
+                    for sel in [
+                        '[data-testid="last-msg"]',
+                        '[data-testid="msg-meta"]',
+                        'span.copyable-text',
+                        'div._ak8l span',  # WhatsApp internal class (fallback)
+                    ]:
+                        el = chat.query_selector(sel)
+                        if el:
+                            text = el.inner_text().strip()
+                            if text:
+                                preview = text
+                                break
 
                     msg_id = f"wa_{hash(sender + preview)}"
                     if msg_id in self.processed_ids:
@@ -272,16 +356,31 @@ class WhatsAppWatcher(BaseWatcher):
             self._pw = sync_playwright().__enter__()
             self._context = self._get_browser_context(self._pw, headless=False)
             self._page = self._context.pages[0] if self._context.pages else self._context.new_page()
-            self.logger.info("Opening WhatsApp Web (non-headless — you can minimise the window)...")
+            self.logger.info("Opening WhatsApp Web (you can minimise the browser window)...")
             self._page.goto("https://web.whatsapp.com", timeout=60000)
-            try:
-                self._page.wait_for_selector(
-                    '#side, [data-testid="chat-list"], [aria-label="Chat list"]',
-                    timeout=90000,
+            time.sleep(4)  # Let the page settle before checking state
+
+            if self._is_showing_qr(self._page):
+                self.logger.error(
+                    "WhatsApp Web is showing a QR code — session expired.\n"
+                    "  Run setup to re-link your phone:\n"
+                    "  python watchers/whatsapp_watcher.py --vault AI_Employee_Vault --setup"
                 )
+                return []
+
+            try:
+                self._page.wait_for_selector(self.CHAT_LIST_SELECTORS, timeout=90000)
                 self.logger.info("WhatsApp Web loaded. Monitoring started.")
             except Exception:
-                self.logger.warning("Chat list not found on startup — may need to re-run --setup.")
+                if self._is_showing_qr(self._page):
+                    self.logger.error(
+                        "QR code detected — session expired. Re-run with --setup to scan QR code."
+                    )
+                else:
+                    self.logger.warning(
+                        "Chat list not found after 90s. "
+                        "Try --setup to refresh the session."
+                    )
                 return []
 
         items = self._scrape_chats(self._page)

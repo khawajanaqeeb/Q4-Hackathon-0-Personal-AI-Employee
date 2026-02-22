@@ -345,5 +345,139 @@
     "actor": "Orchestrator",
     "result": "failed",
     "code": 1
+  },
+  {
+    "timestamp": "2026-02-22T10:00:00",
+    "event_type": "linkedin_post_drafted",
+    "actor": "claude_code",
+    "action_file": "Pending_Approval/LINKEDIN_POST_2026-02-22.md",
+    "result": "awaiting_approval",
+    "post_type": "behind_the_scenes",
+    "hashtags": [
+      "AIAutomation",
+      "Freelancing",
+      "Consulting",
+      "PersonalAI",
+      "Automation"
+    ]
+  },
+  {
+    "timestamp": "2026-02-22T13:25:08.137781",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T13:30:08.279378",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T13:33:21.021057",
+    "event_type": "orchestrator_started",
+    "actor": "Orchestrator",
+    "vault": "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault",
+    "dry_run": false,
+    "scheduling": true
+  },
+  {
+    "timestamp": "2026-02-22T13:35:08.609634",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T13:37:29.853776",
+    "event_type": "email_sent",
+    "actor": "EmailMCPServer",
+    "to": "Naqeeb Kns <naqeebkns@gmail.com>",
+    "subject": "hi",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T13:37:29.967469",
+    "event_type": "email_sent",
+    "actor": "Orchestrator",
+    "file": "EMAIL_20260222_050223_19c82a6b.md",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T13:37:33.276085",
+    "event_type": "email_sent",
+    "actor": "EmailMCPServer",
+    "to": "Naqeeb Kns <naqeebkns@gmail.com>",
+    "subject": "hi",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T13:37:33.351816",
+    "event_type": "email_sent",
+    "actor": "Orchestrator",
+    "file": "EMAIL_20260222_050226_19c82a6b.md",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T13:40:08.005724",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T13:45:08.610743",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T13:50:11.616589",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T14:55:09.475850",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T14:58:04.192104",
+    "event_type": "scheduled_process-inbox",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T14:59:55.068141",
+    "event_type": "scheduled_update-dashboard",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T15:00:20.778389",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:03:09.035605",
+    "event_type": "scheduled_morning-briefing",
+    "actor": "Orchestrator",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-02-22T15:05:10.007842",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
   }
 ]

@@ -10,21 +10,21 @@ Triage, categorize, and action all 13 pending email items. Flag security alerts 
 
 ## Email Triage Summary
 
-| # | File | Sender | Type | Action |
-|---|------|--------|------|--------|
-| 1 | EMAIL_19b606b1 | Binance | Security — password reset | Flag → Pending_Approval |
-| 2 | EMAIL_19c7c164 | LinkedIn | Security — new device | Flag → Pending_Approval |
-| 3 | EMAIL_19c7c185 | LinkedIn | Security — password reset | Flag → Pending_Approval |
-| 4 | EMAIL_19c787a9 | LottieFiles | Marketing newsletter | Archive → Done |
-| 5 | EMAIL_19b26a07 | Cursor | Product newsletter | Archive → Done |
-| 6 | EMAIL_19aaaaa1 | pdfFiller | Marketing promo | Archive → Done |
-| 7 | EMAIL_19a96d7f | School (AKESP) | Admit card — informational | Archive → Done |
-| 8 | EMAIL_199fe16c | Yahoo | Expired OTP code | Archive → Done |
-| 9 | EMAIL_199e4194 | Microsoft | Security info added | Archive → Done |
-| 10 | EMAIL_199be23b | Self | Personal note (exam result) | Archive → Done |
-| 11 | EMAIL_19c7be02 | Self | Personal note ("Hi") | Archive → Done |
-| 12 | EMAIL_199b6289 | Cryptofleet | Platform notification | Archive → Done |
-| 13 | EMAIL_199b677f | Cryptofleet | Duplicate notification | Archive → Done |
+| #   | File           | Sender         | Type                        | Action                  |
+| --- | -------------- | -------------- | --------------------------- | ----------------------- |
+| 1   | EMAIL_19b606b1 | Binance        | Security — password reset   | Flag → Pending_Approval |
+| 2   | EMAIL_19c7c164 | LinkedIn       | Security — new device       | Flag → Pending_Approval |
+| 3   | EMAIL_19c7c185 | LinkedIn       | Security — password reset   | Flag → Pending_Approval |
+| 4   | EMAIL_19c787a9 | LottieFiles    | Marketing newsletter        | Archive → Done          |
+| 5   | EMAIL_19b26a07 | Cursor         | Product newsletter          | Archive → Done          |
+| 6   | EMAIL_19aaaaa1 | pdfFiller      | Marketing promo             | Archive → Done          |
+| 7   | EMAIL_19a96d7f | School (AKESP) | Admit card — informational  | Archive → Done          |
+| 8   | EMAIL_199fe16c | Yahoo          | Expired OTP code            | Archive → Done          |
+| 9   | EMAIL_199e4194 | Microsoft      | Security info added         | Archive → Done          |
+| 10  | EMAIL_199be23b | Self           | Personal note (exam result) | Archive → Done          |
+| 11  | EMAIL_19c7be02 | Self           | Personal note ("Hi")        | Archive → Done          |
+| 12  | EMAIL_199b6289 | Cryptofleet    | Platform notification       | Archive → Done          |
+| 13  | EMAIL_199b677f | Cryptofleet    | Duplicate notification      | Archive → Done          |
 
 ## Steps
 

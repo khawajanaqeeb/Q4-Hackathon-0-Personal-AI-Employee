@@ -13,12 +13,12 @@ Process 4 pending items in Needs_Action/:
 
 ## Item Classification
 
-| File | Type | Priority | Action |
-|------|------|----------|--------|
-| EMAIL_20260222_041815_19c827eb.md | email (self) | P1 | Archive — no reply needed |
-| EMAIL_20260222_041820_19c827eb.md | email (self, dupe) | P1 | Archive — duplicate |
-| FILE_20260222_041616_EMAIL_20260222_034508_19c8260b.md | file_drop | P3 | Create security approval, archive |
-| FILE_20260222_041617_EMAIL_20260222_034508_19c8260b.md | file_drop (dupe) | P3 | Archive — duplicate |
+| File                                                   | Type               | Priority | Action                            |
+| ------------------------------------------------------ | ------------------ | -------- | --------------------------------- |
+| EMAIL_20260222_041815_19c827eb.md                      | email (self)       | P1       | Archive — no reply needed         |
+| EMAIL_20260222_041820_19c827eb.md                      | email (self, dupe) | P1       | Archive — duplicate               |
+| FILE_20260222_041616_EMAIL_20260222_034508_19c8260b.md | file_drop          | P3       | Create security approval, archive |
+| FILE_20260222_041617_EMAIL_20260222_034508_19c8260b.md | file_drop (dupe)   | P3       | Archive — duplicate               |
 
 ## Steps
 
