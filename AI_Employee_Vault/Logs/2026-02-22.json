@@ -507,5 +507,38 @@
     "actor": "Orchestrator",
     "file": "LINKEDIN_POST_2026-02-22.md",
     "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:30:04.653658",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-22T15:05:00",
+    "event_type": "inbox_processed",
+    "actor": "claude_code",
+    "items_found": 1,
+    "items_processed": 1,
+    "pending_approval": 1,
+    "details": [
+      {
+        "file": "EMAIL_20260222_034508_19c8260b.md",
+        "type": "email",
+        "priority": "P1",
+        "action": "security_alert_flagged",
+        "approval_file": "APPROVAL_SECURITY_GoogleAppPassword_20260222b.md",
+        "result": "moved_to_done"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-02-22T15:10:00",
+    "event_type": "security_alert_acknowledged",
+    "actor": "human",
+    "detail": "Google App Password confirmed as owner-created (Gmail MCP/SMTP integration)",
+    "file": "APPROVAL_SECURITY_GoogleAppPassword_20260222b.md",
+    "result": "archived_to_done"
   }
 ]

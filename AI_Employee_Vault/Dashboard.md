@@ -15,22 +15,19 @@ owner: AI Employee v0.1
 | Metric | Value |
 |--------|-------|
 | Needs Action | 0 items |
-| Pending Approval | 4 items |
-| Done This Week | 19 tasks |
-| Active Plans | 2 active, 3 closed |
+| Pending Approval | 1 item |
+| Done This Week | 21 tasks |
+| Active Plans | 1 active, 4 closed |
 | Invoiced (MTD) | $1,500.00 |
 
 ---
 
 ## Inbox Status
 
-- **Items in /Inbox:** 0 files (cleared)
+- **Items in /Inbox:** 0 files (cleared) ✅
 - **Items in /Needs_Action:** 0 actionable files ✅ Clear
-- **Items in /Pending_Approval:** 4 — awaiting your review 👤
-  - `EMAIL_INV-2026-001_Client_A_20260220.md` — Invoice email to client_a@email.com ($1,500)
-  - `APPROVAL_SECURITY_Binance_PasswordReset_20260222.md` — Security: Verify Binance password reset (Dec 27, 2025)
-  - `APPROVAL_SECURITY_LinkedIn_NewDevice_20260222.md` — Security: Verify LinkedIn new device login (Feb 20, 2026)
-  - `APPROVAL_SECURITY_LinkedIn_PasswordReset_20260222.md` — Security: Verify LinkedIn password reset (Feb 20, 2026)
+- **Items in /Pending_Approval:** 1 — awaiting your review 👤
+  - `LINKEDIN_POST_2026-02-22.md` — LinkedIn post approved & queued for publish
 
 ---
 
@@ -38,6 +35,8 @@ owner: AI Employee v0.1
 
 | Time | Event | Detail |
 |------|-------|--------|
+| 2026-02-22 15:10 | ✅ Security alert archived | Google App Password confirmed by owner → Done |
+| 2026-02-22 15:05 | 📬 Inbox processed | 1 email triaged — Google security alert → Pending_Approval |
 | 2026-02-22 15:02 | ✅ WhatsApp Watcher fixed | QR scanned, session saved, monitoring active |
 | 2026-02-22 10:00 | 📝 LinkedIn post drafted | Behind-the-Scenes post → Pending_Approval/ (awaiting your review) |
 | 2026-02-22 00:00 | 📬 Inbox processed | 13 emails triaged — 10 archived, 3 security alerts flagged |
