@@ -125,12 +125,50 @@ class FacebookWatcher(BaseWatcher):
         items = []
         try:
             page.goto(FB_NOTIFICATIONS_URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(4000)
 
-            notif_items = page.query_selector_all('[role="article"]')
+            # Try multiple selectors — Facebook's DOM changes frequently
+            SELECTORS = [
+                '[role="article"]',
+                '[role="listitem"]',
+                '[data-pagelet="Notifications"] a',
+                'div[aria-label*="notification" i]',
+                'div[aria-label*="Notification" i]',
+                'div[data-store-id] a',
+                # Generic feed item fallback
+                'div[class*="notif"] a',
+            ]
+
+            notif_items = []
+            used_selector = None
+            for sel in SELECTORS:
+                found = page.query_selector_all(sel)
+                if found:
+                    notif_items = found
+                    used_selector = sel
+                    logger.info(f"Facebook: found {len(found)} items with selector '{sel}'")
+                    break
+
+            if not notif_items:
+                # Debug: log what's on the page so we can pick the right selector
+                try:
+                    body_text = page.inner_text("body")
+                    logger.warning(
+                        f"Facebook: no notification items found with any selector. "
+                        f"Page title: '{page.title()}'. "
+                        f"Body snippet: {body_text[:300]!r}"
+                    )
+                except Exception:
+                    logger.warning("Facebook: no notification items found and could not read body.")
+                return items
+
+            logger.debug(f"Facebook: using selector '{used_selector}', processing {min(15, len(notif_items))} items")
+
             for notif in notif_items[:15]:
                 try:
-                    text = notif.inner_text()
+                    text = notif.inner_text().strip()
+                    if not text:
+                        continue
                     notif_id = f"fb_{hash(text) & 0xFFFFFF:06x}"
                     if notif_id in self._processed_ids:
                         continue
