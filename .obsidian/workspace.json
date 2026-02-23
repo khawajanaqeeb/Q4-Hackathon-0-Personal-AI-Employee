@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI_Employee_Vault/Done/FILE_20260224_041349_task-new.md",
+                "file": "AI_Employee_Vault/Invoices/INV-2026-001_Client_A.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "FILE_20260224_041349_task-new"
+              "title": "INV-2026-001_Client_A"
             }
           }
         ],
@@ -200,11 +200,13 @@
   },
   "active": "aed19f2dbc218384",
   "lastOpenFiles": [
-    "watchers/instagram_watcher.py.tmp.1831.1771889083046",
-    "AI_Employee_Vault/Needs_Action/FILE_20260224_041348_task-new.md",
-    "AI_Employee_Vault/Needs_Action/EMAIL_20260224_041919_19c8ccbf.md",
-    "AI_Employee_Vault/Inbox/task-new.md",
+    "watchers/instagram_watcher.py.tmp.1831.1771889977225",
+    "watchers/facebook_watcher.py.tmp.1831.1771889973192",
+    "AI_Employee_Vault/Done/FILE_20260224_041348_task-new.md",
+    "AI_Employee_Vault/Done/EMAIL_20260224_041919_19c8ccbf.md",
     "AI_Employee_Vault/Done/FILE_20260224_041349_task-new.md",
+    "watchers/instagram_watcher.py.tmp.1831.1771889083046",
+    "AI_Employee_Vault/Inbox/task-new.md",
     "AI_Employee_Vault/Dashboard.md",
     "AI_Employee_Vault/Approved/LINKEDIN_POST_2026-02-22.md",
     "AI_Employee_Vault/Briefings/2026-02-24_Weekly_Briefing.md",
@@ -216,8 +218,6 @@
     "logs/fs-watcher-err.log",
     "logs/orchestrator-err.log",
     "logs/weekly-audit-error.log",
-    "logs/weekly-audit-out.log",
-    "logs/instagram-watcher-error.log",
     "AI_Employee_Vault/Approved/2026-02-24_Weekly_Briefing.md",
     "AI_Employee_Vault/Done/2026-02-24_Weekly_Briefing.md",
     "AI_Employee_Vault/Done/task-test.md",
