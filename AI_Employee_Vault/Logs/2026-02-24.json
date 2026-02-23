@@ -108,5 +108,12 @@
     "actor": "Orchestrator",
     "file": "LINKEDIN_POST_2026-02-22.md",
     "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T02:05:12.044893",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
   }
 ]
