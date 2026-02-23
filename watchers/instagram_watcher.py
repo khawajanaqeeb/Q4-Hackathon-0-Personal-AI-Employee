@@ -121,42 +121,101 @@ class InstagramWatcher(BaseWatcher):
 
         return items
 
+    # Selectors tried in order to open the notifications panel
+    NOTIF_BUTTON_SELECTORS = [
+        '[aria-label="Notifications"]',
+        'a[href="/accounts/activity/"]',
+        'svg[aria-label="Notifications"]',
+        '[data-testid="notifications-button"]',
+        'a[href*="activity"]',
+    ]
+
+    # Selectors tried in order to find notification items in the panel
+    NOTIF_ITEM_SELECTORS = [
+        '[role="listitem"]',
+        '[role="article"]',
+        'div[tabindex="-1"]',
+        'li',
+    ]
+
+    # Selectors tried in order to find DM threads in the inbox
+    DM_THREAD_SELECTORS = [
+        '[role="listitem"]',
+        '[role="row"]',
+        'div[tabindex="0"]',
+        'a[href*="/direct/t/"]',
+    ]
+
     def _get_notifications(self, page) -> list:
         items = []
         try:
             page.goto(INSTAGRAM_URL, wait_until="domcontentloaded", timeout=30000)
             page.wait_for_timeout(4000)
 
-            # Use page.click() with fresh selector to avoid stale element reference
-            try:
-                page.click('[aria-label="Notifications"]', timeout=5000)
-                page.wait_for_timeout(2000)
-            except Exception:
-                # Try alternate selectors if first fails
+            # Open notifications panel — try each button selector in turn
+            opened = False
+            for btn_sel in self.NOTIF_BUTTON_SELECTORS:
                 try:
-                    page.click('a[href="/accounts/activity/"]', timeout=3000)
+                    page.click(btn_sel, timeout=4000)
                     page.wait_for_timeout(2000)
+                    opened = True
+                    logger.debug(f"Instagram: notifications opened with '{btn_sel}'")
+                    break
                 except Exception:
-                    logger.debug("Notifications button not found — skipping")
-                    return items
+                    continue
 
-            notif_items = page.query_selector_all('[role="listitem"]')
+            if not opened:
+                try:
+                    body_text = page.inner_text("body")
+                    logger.warning(
+                        f"Instagram: could not open notifications panel. "
+                        f"Page title: '{page.title()}'. "
+                        f"Body snippet: {body_text[:300]!r}"
+                    )
+                except Exception:
+                    logger.warning("Instagram: could not open notifications panel.")
+                return items
+
+            # Find notification items — try each selector in turn
+            notif_items = []
+            used_selector = None
+            for sel in self.NOTIF_ITEM_SELECTORS:
+                found = page.query_selector_all(sel)
+                if found:
+                    notif_items = found
+                    used_selector = sel
+                    logger.info(f"Instagram notifications: found {len(found)} items with selector '{sel}'")
+                    break
+
+            if not notif_items:
+                try:
+                    body_text = page.inner_text("body")
+                    logger.warning(
+                        f"Instagram: no notification items found with any selector. "
+                        f"Body snippet: {body_text[:300]!r}"
+                    )
+                except Exception:
+                    logger.warning("Instagram: no notification items found.")
+                return items
+
             for item in notif_items[:15]:
-                    try:
-                        text = item.inner_text()
-                        item_id = f"ig_notif_{hash(text) & 0xFFFFFF:06x}"
-                        if item_id in self._processed_ids:
-                            continue
-                        keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
-                        items.append({
-                            "type": "notification",
-                            "id": item_id,
-                            "text": text[:500],
-                            "keywords": keywords_found,
-                            "timestamp": datetime.now().isoformat(),
-                        })
-                    except Exception:
+                try:
+                    text = item.inner_text().strip()
+                    if not text:
                         continue
+                    item_id = f"ig_notif_{hash(text) & 0xFFFFFF:06x}"
+                    if item_id in self._processed_ids:
+                        continue
+                    keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
+                    items.append({
+                        "type": "notification",
+                        "id": item_id,
+                        "text": text[:500],
+                        "keywords": keywords_found,
+                        "timestamp": datetime.now().isoformat(),
+                    })
+                except Exception:
+                    continue
         except Exception as e:
             logger.warning(f"Could not fetch Instagram notifications: {e}")
         return items
@@ -165,13 +224,36 @@ class InstagramWatcher(BaseWatcher):
         items = []
         try:
             page.goto(INSTAGRAM_INBOX_URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(5000)  # inbox is JS-heavy — needs extra time
 
-            # Find unread DM threads
-            threads = page.query_selector_all('[role="listitem"]')
+            # Find DM threads — try multiple selectors
+            threads = []
+            used_selector = None
+            for sel in self.DM_THREAD_SELECTORS:
+                found = page.query_selector_all(sel)
+                if found:
+                    threads = found
+                    used_selector = sel
+                    logger.info(f"Instagram DMs: found {len(found)} threads with selector '{sel}'")
+                    break
+
+            if not threads:
+                try:
+                    body_text = page.inner_text("body")
+                    logger.warning(
+                        f"Instagram: no DM threads found with any selector. "
+                        f"Page title: '{page.title()}'. "
+                        f"Body snippet: {body_text[:300]!r}"
+                    )
+                except Exception:
+                    logger.warning("Instagram: no DM threads found.")
+                return items
+
             for thread in threads[:10]:
                 try:
-                    text = thread.inner_text()
+                    text = thread.inner_text().strip()
+                    if not text:
+                        continue
                     keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
                     if not keywords_found:
                         continue

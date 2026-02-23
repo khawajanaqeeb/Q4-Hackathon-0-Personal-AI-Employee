@@ -270,6 +270,23 @@ class WhatsAppWatcher(BaseWatcher):
                 context.close()
                 self.logger.info(f"Session stored at: {self.session_path}")
 
+    # Ordered list of selector strategies for finding unread chat rows.
+    # Each entry is a CSS selector string; the first one that returns results wins.
+    UNREAD_CHAT_SELECTORS = [
+        # Strategy 1: exact data-testid with :has() — works in modern Chromium
+        '[data-testid="cell-frame-container"]:has([data-testid="icon-unread-count"])',
+        # Strategy 2: listitem variant
+        '[role="listitem"]:has([data-testid="icon-unread-count"])',
+        # Strategy 3: row variant
+        'div[role="row"]:has([data-testid="icon-unread-count"])',
+        # Strategy 4: li variant
+        'li:has([data-testid="icon-unread-count"])',
+        # Strategy 5: fall back to ALL chat rows (filter by keyword below)
+        '[data-testid="cell-frame-container"]',
+        '[role="listitem"]',
+        'div[role="row"]',
+    ]
+
     def _scrape_chats(self, page) -> list:
         """Scrape the already-open WhatsApp Web page for unread priority messages."""
         items = []
@@ -281,17 +298,38 @@ class WhatsAppWatcher(BaseWatcher):
             # Wait for chat list with broad fallback selectors
             page.wait_for_selector(self.CHAT_LIST_SELECTORS, timeout=60000)
 
-            # Find unread chats — try multiple selector strategies
-            unread_chats = page.query_selector_all(
-                # Current WhatsApp Web selectors
-                '[data-testid="cell-frame-container"]:has([data-testid="icon-unread-count"]), '
-                '[role="listitem"]:has([data-testid="icon-unread-count"]), '
-                # Fallback: any chat row with an unread badge span
-                'div[role="row"]:has([data-testid="icon-unread-count"]), '
-                'li:has([data-testid="icon-unread-count"])'
-            )
+            # Find unread chats — try each selector strategy in order
+            unread_chats = []
+            used_selector = None
+            keyword_filter_required = False  # True when falling back to all chats
 
-            self.logger.debug(f"Found {len(unread_chats)} unread chat(s).")
+            for sel in self.UNREAD_CHAT_SELECTORS:
+                found = page.query_selector_all(sel)
+                if found:
+                    unread_chats = found
+                    used_selector = sel
+                    # If we fell back to a non-unread-specific selector, we'll
+                    # filter by keyword content instead of unread badge
+                    keyword_filter_required = "[data-testid=\"icon-unread-count\"]" not in sel
+                    self.logger.info(
+                        f"WhatsApp: found {len(found)} chat row(s) with selector '{sel}' "
+                        f"(keyword_filter={keyword_filter_required})"
+                    )
+                    break
+
+            if not unread_chats:
+                try:
+                    body_text = page.inner_text("body")
+                    self.logger.warning(
+                        f"WhatsApp: no chat rows found with any selector. "
+                        f"Page title: '{page.title()}'. "
+                        f"Body snippet: {body_text[:300]!r}"
+                    )
+                except Exception:
+                    self.logger.warning("WhatsApp: no chat rows found and could not read body.")
+                return items
+
+            self.logger.debug(f"WhatsApp: processing up to {min(10, len(unread_chats))} chat row(s).")
 
             for chat in unread_chats[:10]:
                 try:
@@ -324,6 +362,13 @@ class WhatsAppWatcher(BaseWatcher):
                             if text:
                                 preview = text
                                 break
+
+                    # When falling back to all chats, only process if it has keywords
+                    if keyword_filter_required:
+                        combined = (sender + " " + preview).lower()
+                        all_keywords = [kw for kwlist in PRIORITY_KEYWORDS.values() for kw in kwlist]
+                        if not any(kw in combined for kw in all_keywords):
+                            continue
 
                     msg_id = f"wa_{hash(sender + preview)}"
                     if msg_id in self.processed_ids:
