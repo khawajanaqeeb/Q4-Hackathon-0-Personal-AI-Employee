@@ -41,9 +41,24 @@ ROOT = Path(__file__).resolve().parent.parent
 VAULT_DEFAULT = ROOT / "AI_Employee_Vault"
 
 BUSINESS_KEYWORDS = [
-    "invoice", "payment", "quote", "pricing", "hire", "contract",
-    "urgent", "collab", "project", "proposal", "partnership", "service",
-    "consulting", "interested", "buy", "purchase",
+    # Sales & transactions
+    "invoice", "payment", "quote", "pricing", "price", "cost", "fee",
+    "buy", "purchase", "order", "checkout", "refund", "discount", "offer",
+    # Hiring & work
+    "hire", "hiring", "job", "freelance", "contract", "retainer", "rate",
+    "availability", "available", "book", "booking", "schedule",
+    # Business development
+    "collab", "collaboration", "partnership", "partner", "proposal",
+    "project", "consulting", "consultant", "service", "agency",
+    # Urgency & intent
+    "urgent", "asap", "immediately", "deadline", "interested",
+    "opportunity", "deal", "negotiate", "discuss", "meeting",
+    # Contact intent
+    "dm", "message", "email", "call", "contact", "reach out", "connect",
+    "inquiry", "enquiry", "question", "help", "support",
+    # Social media business
+    "sponsor", "sponsorship", "promote", "promotion", "advertisement",
+    "ad", "brand deal", "affiliate", "ambassador",
 ]
 
 FB_URL = "https://www.facebook.com"

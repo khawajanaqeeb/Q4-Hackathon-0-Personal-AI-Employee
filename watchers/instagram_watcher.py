@@ -40,9 +40,25 @@ ROOT = Path(__file__).resolve().parent.parent
 VAULT_DEFAULT = ROOT / "AI_Employee_Vault"
 
 BUSINESS_KEYWORDS = [
-    "collab", "collaboration", "partner", "sponsor", "paid", "promote",
-    "pricing", "rate", "invoice", "deal", "hire", "project", "service",
-    "dm", "contact", "inquiry", "interested",
+    # Sales & transactions
+    "invoice", "payment", "quote", "pricing", "price", "cost", "fee",
+    "buy", "purchase", "order", "checkout", "refund", "discount", "offer",
+    # Hiring & work
+    "hire", "hiring", "job", "freelance", "contract", "retainer", "rate",
+    "availability", "available", "book", "booking", "schedule",
+    # Business development
+    "collab", "collaboration", "partnership", "partner", "proposal",
+    "project", "consulting", "consultant", "service", "agency",
+    # Urgency & intent
+    "urgent", "asap", "immediately", "deadline", "interested",
+    "opportunity", "deal", "negotiate", "discuss", "meeting",
+    # Contact intent
+    "dm", "message", "email", "call", "contact", "reach out", "connect",
+    "inquiry", "enquiry", "question", "help", "support",
+    # Instagram-specific
+    "sponsor", "sponsorship", "promote", "promotion", "paid partnership",
+    "ad", "brand deal", "affiliate", "ambassador", "shoutout",
+    "feature", "reel", "story", "post", "content", "creator",
 ]
 
 INSTAGRAM_URL = "https://www.instagram.com"
