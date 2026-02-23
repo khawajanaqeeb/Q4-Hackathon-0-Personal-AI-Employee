@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-02-24 01:50
+last_updated: 2026-02-24 03:37
 auto_refresh: true
 owner: AI Employee v1.0
 tier: Gold
@@ -20,7 +20,7 @@ tier: Gold
 | Done This Week | 31 tasks |
 | Active Plans | 0 active |
 | Invoiced (MTD) | $1,500.00 |
-| Latest Briefing | [2026-02-24_Weekly_Briefing.md](Briefings/2026-02-24_Weekly_Briefing.md) |
+| Latest Briefing | [2026-02-24_Weekly_Briefing.md](2026-02-24_Weekly_Briefing.md) |
 
 ---
 
@@ -37,6 +37,7 @@ tier: Gold
 
 | Time | Event | Detail |
 |------|-------|--------|
+| 2026-02-24 03:37 | 👁️ Facebook + Instagram watchers started | Sessions live, monitoring active (PIDs 10191, 10352) |
 | 2026-02-24 01:50 | 📊 Weekly audit generated | Gold Tier CEO Briefing → Briefings/2026-02-24_Weekly_Briefing.md |
 | 2026-02-22 15:10 | ✅ Security alert archived | Google App Password confirmed by owner → Done |
 | 2026-02-22 15:05 | 📬 Inbox processed | 1 email triaged — Google security alert → Pending_Approval |
@@ -74,8 +75,8 @@ tier: Gold
 | LinkedIn Watcher | ✅ Active (credentials set, session ready) |
 | WhatsApp Watcher | ✅ Active (session live, QR scanned) |
 | Twitter/X Watcher | ⚙️ Ready (run --setup to configure) |
-| Facebook Watcher | ⚙️ Ready (run --setup to configure) |
-| Instagram Watcher | ⚙️ Ready (run --setup to configure) |
+| Facebook Watcher | ✅ Active (session live, monitoring) |
+| Instagram Watcher | ✅ Active (session live, monitoring) |
 | Orchestrator | ✅ Running |
 | Watchdog | ✅ Configured (Gold Tier) |
 | Email MCP Server | ✅ Ready |

@@ -1,0 +1,21 @@
+2026-02-24 03:47:07 [InstagramWatcher] INFO: Starting InstagramWatcher (interval: 180s)
+2026-02-24 03:47:32 [InstagramWatcher] WARNING: Could not fetch Instagram notifications: ElementHandle.click: Element is not attached to the DOM
+Call log:
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+2026-02-24 03:51:01 [InstagramWatcher] WARNING: Could not fetch Instagram notifications: ElementHandle.click: Element is not attached to the DOM
+Call log:
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+2026-02-24 04:01:15 [InstagramWatcher] WARNING: Could not fetch Instagram notifications: ElementHandle.click: Element is not attached to the DOM
+Call log:
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+2026-02-24 04:04:35 [InstagramWatcher] WARNING: Could not fetch Instagram notifications: ElementHandle.click: Element is not attached to the DOM
+Call log:
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+

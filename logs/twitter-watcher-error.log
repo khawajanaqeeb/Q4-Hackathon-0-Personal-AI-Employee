@@ -1,0 +1,13 @@
+2026-02-24 03:47:05: 2026-02-24 03:47:05 [TwitterWatcher] INFO: Starting TwitterWatcher (interval: 120s)
+2026-02-24 03:47:05: 2026-02-24 03:47:05 [TwitterWatcher] WARNING: Twitter session not found at /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/.twitter_session. Run --setup first.
+2026-02-24 03:49:04: 2026-02-24 03:49:04 [TwitterWatcher] WARNING: Twitter session not found at /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/.twitter_session. Run --setup first.
+2026-02-24 03:51:04: 2026-02-24 03:51:04 [TwitterWatcher] WARNING: Twitter session not found at /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/.twitter_session. Run --setup first.
+2026-02-24 03:53:04: 2026-02-24 03:53:04 [TwitterWatcher] WARNING: Twitter session not found at /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/.twitter_session. Run --setup first.
+2026-02-24 03:54:51: Traceback (most recent call last):
+2026-02-24 03:54:51:   File "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/watchers/twitter_watcher.py", line 352, in <module>
+2026-02-24 03:54:51:     main()
+2026-02-24 03:54:51:   File "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/watchers/twitter_watcher.py", line 348, in main
+2026-02-24 03:54:51:     watcher.run()
+2026-02-24 03:54:51:   File "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/watchers/base_watcher.py", line 104, in run
+2026-02-24 03:54:51:     time.sleep(self.check_interval)
+2026-02-24 03:54:51: KeyboardInterrupt
