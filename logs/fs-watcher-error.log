@@ -7,3 +7,9 @@
 2026-02-22 04:57:34: 2026-02-22 04:57:34 [InboxDropHandler] INFO: New file detected: APPROVAL_SECURITY_GoogleAppPassword_20260222.md
 2026-02-22 04:57:35: 2026-02-22 04:57:35 [InboxDropHandler] INFO: Copied to Needs_Action: FILE_20260222_045734_APPROVAL_SECURITY_GoogleAppPassword_20260222.md
 2026-02-22 04:57:35: 2026-02-22 04:57:35 [InboxDropHandler] INFO: Created action file: FILE_20260222_045734_APPROVAL_SECURITY_GoogleAppPassword_20260222.md
+2026-02-24 03:47:04: 2026-02-24 03:47:04 [FileSystemWatcher] INFO: Monitoring /Inbox at: /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault/Inbox
+2026-02-24 03:47:04: 2026-02-24 03:47:04 [FileSystemWatcher] INFO: Drop files into /Inbox to trigger AI processing.
+2026-02-24 03:47:04: 2026-02-24 03:47:04 [FileSystemWatcher] INFO: Using PollingObserver (WSL2/Windows filesystem detected).
+2026-02-24 04:13:48: 2026-02-24 04:13:48 [InboxDropHandler] INFO: New file detected: task-new.md
+2026-02-24 04:13:49: 2026-02-24 04:13:49 [InboxDropHandler] INFO: Copied to Needs_Action: FILE_20260224_041348_task-new.md
+2026-02-24 04:13:49: 2026-02-24 04:13:49 [InboxDropHandler] INFO: Created action file: FILE_20260224_041348_task-new.md

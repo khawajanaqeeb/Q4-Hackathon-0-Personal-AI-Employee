@@ -13,15 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI_Employee_Vault/Approved/LINKEDIN_POST_2026-02-22.md",
+                "file": "AI_Employee_Vault/Dashboard.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "LINKEDIN_POST_2026-02-22"
+              "title": "Dashboard"
+            }
+          },
+          {
+            "id": "3507cb8202e44260",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "AI_Employee_Vault/Done/FILE_20260224_041349_task-new.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "FILE_20260224_041349_task-new"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -183,9 +198,15 @@
       "bases:Create new base": false
     }
   },
-  "active": "69705d3ca0d8439e",
+  "active": "aed19f2dbc218384",
   "lastOpenFiles": [
+    "watchers/instagram_watcher.py.tmp.1831.1771889083046",
+    "AI_Employee_Vault/Needs_Action/FILE_20260224_041348_task-new.md",
+    "AI_Employee_Vault/Needs_Action/EMAIL_20260224_041919_19c8ccbf.md",
+    "AI_Employee_Vault/Inbox/task-new.md",
+    "AI_Employee_Vault/Done/FILE_20260224_041349_task-new.md",
     "AI_Employee_Vault/Dashboard.md",
+    "AI_Employee_Vault/Approved/LINKEDIN_POST_2026-02-22.md",
     "AI_Employee_Vault/Briefings/2026-02-24_Weekly_Briefing.md",
     "logs/instagram-watcher-err.log",
     "logs/facebook-watcher-err.log",
@@ -203,7 +224,6 @@
     "AI_Employee_Vault/Done/task-2.md",
     "AI_Employee_Vault/Done/APPROVAL_invoice_client_a_2026-02-20_APPROVED.md",
     "AI_Employee_Vault/Done/EMAIL_20260220_212558_19c787a9.md",
-    "AI_Employee_Vault/Approved/LINKEDIN_POST_2026-02-22.md",
     "AI_Employee_Vault/Plans/PLAN_process_inbox_20260222b.md",
     "AI_Employee_Vault/Plans/PLAN_process_inbox_20260222.md",
     "AI_Employee_Vault/Plans/PLAN_invoice_client_a.md",
@@ -215,11 +235,6 @@
     "AI_Employee_Vault/Approved/EMAIL_20260222_050223_19c82a6b.md",
     "AI_Employee_Vault/Done/FILE_20260222_045734_APPROVAL_SECURITY_GoogleAppPassword_20260222.md",
     "AI_Employee_Vault/Done/FILE_20260222_041617_EMAIL_20260222_034508_19c8260b.md",
-    "AI_Employee_Vault/Done/FILE_20260222_041616_EMAIL_20260222_034508_19c8260b.md",
-    "AI_Employee_Vault/Done/EMAIL_20260222_041820_19c827eb.md",
-    "AI_Employee_Vault/Done/EMAIL_20260222_041815_19c827eb.md",
-    "AI_Employee_Vault/Done/APPROVAL_SECURITY_GoogleAppPassword_20260222.md",
-    "AI_Employee_Vault/Needs_Action/EMAIL_20260222_041820_19c827eb.md",
-    "AI_Employee_Vault/Needs_Action/EMAIL_20260222_041815_19c827eb.md"
+    "AI_Employee_Vault/Done/FILE_20260222_041616_EMAIL_20260222_034508_19c8260b.md"
   ]
 }

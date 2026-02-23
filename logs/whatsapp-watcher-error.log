@@ -33,3 +33,6 @@
 2026-02-22 04:07:38:   File "/mnt/f/Q4-Hackathon-0-Personal-AI-Employee/watchers/base_watcher.py", line 104, in run
 2026-02-22 04:07:38:     time.sleep(self.check_interval)
 2026-02-22 04:07:38: KeyboardInterrupt
+2026-02-24 03:47:05: 2026-02-24 03:47:05 [WhatsAppWatcher] INFO: Starting WhatsAppWatcher (interval: 30s)
+2026-02-24 03:47:44: 2026-02-24 03:47:44 [WhatsAppWatcher] INFO: Opening WhatsApp Web (you can minimise the browser window)...
+2026-02-24 03:48:02: 2026-02-24 03:48:02 [WhatsAppWatcher] INFO: WhatsApp Web loaded. Monitoring started.

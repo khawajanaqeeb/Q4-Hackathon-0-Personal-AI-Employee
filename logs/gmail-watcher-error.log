@@ -5,3 +5,8 @@
 2026-02-22 04:18:16: 2026-02-22 04:18:16 [GmailWatcher] INFO: Created action file: EMAIL_20260222_041815_19c827eb.md
 2026-02-22 05:02:22: 2026-02-22 05:02:22 [GmailWatcher] INFO: Found 1 new important messages.
 2026-02-22 05:02:23: 2026-02-22 05:02:23 [GmailWatcher] INFO: Created action file: EMAIL_20260222_050223_19c82a6b.md
+2026-02-24 03:47:16: 2026-02-24 03:47:16 [googleapiclient.discovery_cache] INFO: file_cache is only supported with oauth2client<4.0.0
+2026-02-24 03:47:16: 2026-02-24 03:47:16 [GmailWatcher] INFO: Gmail API authenticated successfully.
+2026-02-24 03:47:16: 2026-02-24 03:47:16 [GmailWatcher] INFO: Starting GmailWatcher (interval: 120s)
+2026-02-24 04:19:18: 2026-02-24 04:19:18 [GmailWatcher] INFO: Found 1 new important messages.
+2026-02-24 04:19:20: 2026-02-24 04:19:20 [GmailWatcher] INFO: Created action file: EMAIL_20260224_041919_19c8ccbf.md

@@ -1322,5 +1322,1299 @@
         "pid": 11981
       }
     }
+  },
+  {
+    "timestamp": "2026-02-24T04:07:02.254173",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:08:02.216634",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:09:01.541478",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:10:01.560251",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:10:09.990136",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T04:11:01.606449",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:12:01.459549",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:13:01.497886",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:13:49.127624",
+    "event_type": "file_dropped",
+    "actor": "FileSystemWatcher",
+    "source_file": "task-new.md",
+    "destination": "FILE_20260224_041349_task-new.md",
+    "action_file": "FILE_20260224_041349_task-new.md",
+    "priority": "P3",
+    "result": "action_file_created"
+  },
+  {
+    "timestamp": "2026-02-24T04:14:01.523978",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:15:01.555691",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:15:21.580030",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T04:16:01.598651",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:17:01.735711",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:18:01.723784",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:19:13.209751",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:19:19.215474",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c8ccbfe91cff4d",
+    "from": "Khawaja Naqeeb Uddin <naqeebkns@gmail.com>",
+    "subject": "Hi",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-24T04:19:19.660376",
+    "event_type": "email_detected",
+    "actor": "GmailWatcher",
+    "message_id": "19c8ccbfe91cff4d",
+    "from": "Khawaja Naqeeb Uddin <naqeebkns@gmail.com>",
+    "subject": "Hi",
+    "priority": "P1"
+  },
+  {
+    "timestamp": "2026-02-24T04:19:20.252739",
+    "event_type": "action_file_created",
+    "actor": "GmailWatcher",
+    "file": "EMAIL_20260224_041919_19c8ccbf.md"
+  },
+  {
+    "timestamp": "2026-02-24T04:20:01.233200",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:20:24.654615",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T04:20:59.557533",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:21:59.612940",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:22:59.663471",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:23:59.719858",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:24:59.609657",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:25:14.283782",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T04:25:58.514019",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:26:58.561062",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:27:58.589144",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:28:58.645808",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:29:58.704518",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-24T04:30:09.176157",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T04:30:58.121023",
+    "event_type": "watchdog_health_check",
+    "actor": "Watchdog",
+    "processes": {
+      "orchestrator": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11971
+      },
+      "fs-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11972
+      },
+      "gmail-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11973
+      },
+      "whatsapp-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11974
+      },
+      "twitter-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11975
+      },
+      "facebook-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11979
+      },
+      "instagram-watcher": {
+        "healthy": true,
+        "enabled": true,
+        "restart_count": 0,
+        "pid": 11981
+      }
+    }
   }
 ]
