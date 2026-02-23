@@ -109,16 +109,23 @@ class InstagramWatcher(BaseWatcher):
         items = []
         try:
             page.goto(INSTAGRAM_URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(4000)
 
-            # Click the heart/notifications icon
-            notif_btn = page.query_selector('[aria-label="Notifications"]')
-            if notif_btn:
-                notif_btn.click()
+            # Use page.click() with fresh selector to avoid stale element reference
+            try:
+                page.click('[aria-label="Notifications"]', timeout=5000)
                 page.wait_for_timeout(2000)
+            except Exception:
+                # Try alternate selectors if first fails
+                try:
+                    page.click('a[href="/accounts/activity/"]', timeout=3000)
+                    page.wait_for_timeout(2000)
+                except Exception:
+                    logger.debug("Notifications button not found — skipping")
+                    return items
 
-                notif_items = page.query_selector_all('[role="listitem"]')
-                for item in notif_items[:15]:
+            notif_items = page.query_selector_all('[role="listitem"]')
+            for item in notif_items[:15]:
                     try:
                         text = item.inner_text()
                         item_id = f"ig_notif_{hash(text) & 0xFFFFFF:06x}"
