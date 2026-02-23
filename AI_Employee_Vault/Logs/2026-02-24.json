@@ -115,5 +115,19 @@
     "actor": "Orchestrator",
     "file": "LINKEDIN_POST_2026-02-22.md",
     "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T02:10:09.256124",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
+  },
+  {
+    "timestamp": "2026-02-24T02:15:10.178356",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
   }
 ]
