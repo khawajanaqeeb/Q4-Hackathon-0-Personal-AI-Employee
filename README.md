@@ -1,8 +1,8 @@
-# Personal AI Employee — Silver Tier ✅
+# Personal AI Employee — Gold Tier ✅
 
 > *Your life and business on autopilot. Local-first, agent-driven, human-in-the-loop.*
 
-A **Digital FTE (Full-Time Equivalent)** powered by Claude Code and Obsidian. The Silver Tier adds LinkedIn automation, WhatsApp monitoring, an Email MCP Server, an Orchestrator, and full scheduling — transforming the Bronze foundation into a **Functional Assistant**.
+A **Digital FTE (Full-Time Equivalent)** powered by Claude Code and Obsidian. The Gold Tier adds Twitter/X, Facebook, Instagram, Odoo accounting, Ralph Wiggum autonomous loop, error recovery, process watchdog, and weekly CEO briefing — transforming the Silver assistant into a fully **Autonomous Employee**.
 
 ---
 
@@ -10,289 +10,260 @@ A **Digital FTE (Full-Time Equivalent)** powered by Claude Code and Obsidian. Th
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│              PERSONAL AI EMPLOYEE (Silver Tier)                 │
+│              PERSONAL AI EMPLOYEE (Gold Tier)                   │
 └─────────────────────────────────────────────────────────────────┘
 
-External Sources (Gmail, LinkedIn, WhatsApp, File drops)
+External Sources (Gmail, LinkedIn, WhatsApp, Twitter/X, Facebook, Instagram, Files)
          │
          ▼
-  ┌──────────────────────────────────────────┐
-  │           PERCEPTION LAYER               │
-  │  filesystem_watcher.py (Bronze)          │
-  │  gmail_watcher.py      (Bronze/Silver)   │
-  │  linkedin_watcher.py   (Silver) ← NEW    │
-  │  whatsapp_watcher.py   (Silver) ← NEW    │
-  └──────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────────┐
+  │               PERCEPTION LAYER                   │
+  │  filesystem_watcher.py  (Bronze)                │
+  │  gmail_watcher.py       (Bronze/Silver)         │
+  │  linkedin_watcher.py    (Silver)                │
+  │  whatsapp_watcher.py    (Silver)                │
+  │  twitter_watcher.py     (Gold) ← NEW            │
+  │  facebook_watcher.py    (Gold) ← NEW            │
+  │  instagram_watcher.py   (Gold) ← NEW            │
+  └──────────────────────────────────────────────────┘
          │ creates .md action files
          ▼
   AI_Employee_Vault/Needs_Action/
          │
-         ▼ (Claude Code reads)
-  AI_Employee_Vault/Plans/     ← reasoning plans
+         ▼ (Claude Code reads, Ralph Wiggum loops)
+  AI_Employee_Vault/Plans/          ← reasoning plans
          │
          ▼
-  AI_Employee_Vault/Pending_Approval/   ← human reviews
+  AI_Employee_Vault/Pending_Approval/   ← human reviews (HITL)
          │
          ▼ (human moves to /Approved/)
-  ┌──────────────────────────────────────────┐
-  │         ORCHESTRATOR  ← NEW             │
-  │  Watches /Approved/ → routes actions     │
-  │  • Email → Email MCP Server             │
-  │  • LinkedIn post → linkedin_watcher     │
-  │  • Generic → log + move to Done/        │
-  └──────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────────┐
+  │              ORCHESTRATOR                        │
+  │  Watches /Approved/ → routes actions             │
+  │  • Email    → Email MCP Server                  │
+  │  • Social   → Social Media MCP Server ← NEW     │
+  │  • Odoo     → Odoo MCP Server ← NEW             │
+  │  Scheduled: Weekly Audit (Mon 7am) ← NEW        │
+  └──────────────────────────────────────────────────┘
          │
          ▼
-  External Actions (email sent, LinkedIn posted)
+  External Actions (email, social posts, invoices)
          │
          ▼
-  AI_Employee_Vault/Done/   + Logs/<date>.json
+  AI_Employee_Vault/Done/ + Logs/<date>.json
+         │
+  ┌──────────────────────────────────────────────────┐
+  │          HEALTH & RECOVERY LAYER (Gold)          │
+  │  watchdog.py      — monitors/restarts processes  │
+  │  retry_handler.py — exponential backoff          │
+  │  ralph_wiggum_hook.py — autonomous loop (Stop hook) │
+  └──────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## Quick Start
 
-### 1. Prerequisites
+### 1. Install dependencies
 
 ```bash
-# Python 3.12+
-python3 --version
-
-# Install core dependencies
-pip3 install watchdog python-dotenv --break-system-packages
-
-# Optional: Playwright (for LinkedIn/WhatsApp watchers)
-pip3 install playwright --break-system-packages
+pip3 install watchdog python-dotenv playwright google-auth-oauthlib google-api-python-client --break-system-packages
 playwright install chromium
-
-# Optional: Node.js + PM2 (for always-on process management)
-npm install -g pm2
 ```
 
-### 2. Configure Environment
+### 2. Configure `.env`
 
 ```bash
 cp .env.example .env
-# Edit .env with your SMTP, LinkedIn, Gmail credentials
+# Edit .env with your credentials
 ```
 
-### 3. Open Vault in Obsidian
-
-Open Obsidian → "Open folder as vault" → select `AI_Employee_Vault/`
-
-### 4. Start the Orchestrator
+### 3. Set up social media sessions (Gold Tier)
 
 ```bash
-# Start orchestrator (watches /Approved/ + handles scheduling)
-python3 orchestrator.py --vault AI_Employee_Vault
+# Twitter/X
+python3 watchers/twitter_watcher.py --vault AI_Employee_Vault --setup
+
+# Facebook
+python3 watchers/facebook_watcher.py --vault AI_Employee_Vault --setup
+
+# Instagram
+python3 watchers/instagram_watcher.py --vault AI_Employee_Vault --setup
 ```
 
-Or use PM2 for always-on operation:
-```bash
-pm2 start scripts/pm2.config.js
-pm2 save && pm2 startup
-```
-
-### 5. Run Agent Skills in Claude Code
-
-```bash
-claude
-```
-
-```
-/process-inbox       # Process all pending items
-/update-dashboard    # Refresh your dashboard
-/morning-briefing    # Generate CEO briefing
-/linkedin-post       # Draft a LinkedIn business post
-/approve-pending     # Review all items awaiting approval
-/run-orchestrator    # Start the Orchestrator (instructions)
-```
-
----
-
-## Vault Structure
-
-```
-AI_Employee_Vault/
-├── Dashboard.md              ← Real-time status (open in Obsidian)
-├── Company_Handbook.md       ← AI Employee rules of engagement
-├── Business_Goals.md         ← Revenue targets & KPIs
-├── Inbox/                    ← Drop files here (FileSystemWatcher monitors)
-├── Needs_Action/             ← Watchers create .md files here
-├── Done/                     ← Completed tasks
-├── Plans/                    ← Claude's reasoning plans (REQUIRED per task)
-├── Logs/                     ← Structured JSON audit logs
-├── Pending_Approval/         ← Awaiting your approval
-├── Approved/                 ← Move files here to approve → Orchestrator acts
-├── Rejected/                 ← Move files here to reject
-├── Briefings/                ← CEO briefings
-└── Accounting/               ← Financial data
-```
-
----
-
-## Agent Skills
-
-| Skill | Command | Tier |
-|-------|---------|------|
-| Process Inbox | `/process-inbox` | Bronze |
-| Update Dashboard | `/update-dashboard` | Bronze |
-| Morning Briefing | `/morning-briefing` | Bronze |
-| Start Watcher | `/start-watcher` | Bronze |
-| **LinkedIn Post** | **`/linkedin-post`** | **Silver** |
-| **Approve Pending** | **`/approve-pending`** | **Silver** |
-| **Run Orchestrator** | **`/run-orchestrator`** | **Silver** |
-
----
-
-## Watcher Scripts
-
-| Script | Description | Credentials |
-|--------|-------------|-------------|
-| `filesystem_watcher.py` | Monitors /Inbox for dropped files | None |
-| `gmail_watcher.py` | Monitors Gmail for important emails | Google OAuth |
-| `linkedin_watcher.py` | Monitors LinkedIn + posts content | LinkedIn login |
-| `whatsapp_watcher.py` | Monitors WhatsApp Web messages | QR scan (once) |
-
-### Quick Start per Watcher
+### 4. Configure Odoo (optional but recommended)
 
 ```bash
-# Filesystem (Bronze — always-on, no credentials)
-python3 watchers/filesystem_watcher.py --vault AI_Employee_Vault
+# Docker (easiest):
+docker run -d -p 8069:8069 --name odoo odoo:17
 
-# Gmail (requires credentials.json from Google Cloud Console)
-python3 watchers/gmail_watcher.py --vault AI_Employee_Vault
+# Then visit http://localhost:8069, create database, add to .env:
+# ODOO_URL=http://localhost:8069
+# ODOO_DB=your_db
+# ODOO_USERNAME=admin
+# ODOO_PASSWORD=your_password
 
-# LinkedIn (requires LINKEDIN_EMAIL + LINKEDIN_PASSWORD in .env)
-python3 watchers/linkedin_watcher.py --vault AI_Employee_Vault
-
-# Post an approved LinkedIn post
-python3 watchers/linkedin_watcher.py \
-  --vault AI_Employee_Vault \
-  --post-file AI_Employee_Vault/Approved/LINKEDIN_POST_2026-02-20.md
-
-# WhatsApp (scan QR code once)
-python3 watchers/whatsapp_watcher.py --vault AI_Employee_Vault --setup
-python3 watchers/whatsapp_watcher.py --vault AI_Employee_Vault
+# Test Odoo MCP:
+python3 mcp_servers/odoo_server.py --test
 ```
 
----
+### 5. Start everything with PM2
 
-## MCP Server: Email (Silver Tier)
-
-The Email MCP Server exposes email tools to Claude Code via the Model Context Protocol (JSON-RPC 2.0 over stdio).
-
-**Tools:**
-- `send_email` — Send via SMTP (requires prior human approval)
-- `draft_email` — Save to /Pending_Approval/ (no approval needed)
-- `list_drafts` — List pending drafts
-
-**Setup:**
-```bash
-# 1. Configure SMTP in .env (Gmail App Password recommended)
-# 2. Test connection
-python3 mcp_servers/email_server.py --test
-
-# 3. Register with Claude Code (project-level .mcp.json already configured)
-# Claude Code will auto-load this when you run 'claude' from the project root
-
-# 4. Send an approved email
-python3 mcp_servers/email_server.py --send-approved AI_Employee_Vault/Approved/EMAIL_draft.md
-```
-
----
-
-## Scheduling
-
-### Option A: Orchestrator (built-in)
-The Orchestrator runs all scheduled tasks internally:
-- Every 30 min: `/process-inbox`
-- Every hour: `/update-dashboard`
-- Daily @ 8 AM: `/morning-briefing`
-- Sunday @ 7 PM: Weekly audit
-
-### Option B: Cron (Linux/WSL2)
-```bash
-bash scripts/setup_cron.sh        # Install
-bash scripts/setup_cron.sh --list # View
-bash scripts/setup_cron.sh --remove # Remove
-
-# WSL2: Start cron
-sudo service cron start
-```
-
-### Option C: PM2 (Recommended for always-on)
 ```bash
 npm install -g pm2
 pm2 start scripts/pm2.config.js
 pm2 save && pm2 startup
-pm2 status    # View all processes
-pm2 logs      # Tail logs
 ```
+
+### 6. Set up Gold Tier cron jobs
+
+```bash
+bash scripts/setup_cron_gold.sh
+```
+
+---
+
+## Agent Skills (Slash Commands)
+
+| Command | Description | Tier |
+|---------|-------------|------|
+| `/process-inbox` | Process all items in Needs_Action | Bronze |
+| `/update-dashboard` | Refresh Dashboard.md | Bronze |
+| `/morning-briefing` | Generate CEO briefing | Bronze |
+| `/start-watcher` | Start file system watcher | Bronze |
+| `/linkedin-post` | Draft LinkedIn post (HITL) | Silver |
+| `/approve-pending` | Review pending approvals | Silver |
+| `/run-orchestrator` | Start Master Orchestrator | Silver |
+| `/social-post` | Draft multi-platform social post (HITL) | **Gold** |
+| `/weekly-audit` | Generate weekly CEO business briefing | **Gold** |
+| `/ralph-loop` | Autonomous multi-step task loop | **Gold** |
+| `/odoo-query` | Query Odoo accounting/ERP | **Gold** |
+
+---
+
+## Component Reference
+
+### Watchers
+
+| File | Platform | Interval |
+|------|----------|----------|
+| `watchers/filesystem_watcher.py` | File drops | Real-time |
+| `watchers/gmail_watcher.py` | Gmail | 2 min |
+| `watchers/linkedin_watcher.py` | LinkedIn | 5 min |
+| `watchers/whatsapp_watcher.py` | WhatsApp | 30 sec |
+| `watchers/twitter_watcher.py` | Twitter/X | 2 min |
+| `watchers/facebook_watcher.py` | Facebook | 3 min |
+| `watchers/instagram_watcher.py` | Instagram | 3 min |
+
+### MCP Servers
+
+| File | Tools | Notes |
+|------|-------|-------|
+| `mcp_servers/email_server.py` | send_email, draft_email, list_drafts | SMTP |
+| `mcp_servers/social_media_server.py` | post_to_twitter, post_to_facebook, post_to_instagram, get_social_summary | Playwright sessions |
+| `mcp_servers/odoo_server.py` | odoo_authenticate, get_invoices, create_invoice, get_partners, get_financial_summary | Odoo JSON-RPC; mock mode by default |
+
+### Gold Tier Scripts
+
+| File | Purpose |
+|------|---------|
+| `watchers/retry_handler.py` | Exponential backoff, circuit breaker, rate limiter |
+| `scripts/watchdog.py` | Process health monitor — monitors all watchers |
+| `scripts/ralph_wiggum_hook.py` | Stop hook — keeps Claude looping until work is done |
+| `scripts/weekly_audit.py` | Weekly business + accounting audit → CEO briefing |
+| `scripts/setup_cron_gold.sh` | Installs Gold Tier cron jobs |
+
+---
+
+## Ralph Wiggum Loop
+
+The Ralph Wiggum pattern keeps Claude Code working autonomously until a task is complete:
+
+```
+Claude works → tries to exit → Stop hook fires → checks Needs_Action/ →
+  items remain? → block exit, re-inject prompt → Claude keeps working →
+  Needs_Action/ empty? → allow exit
+```
+
+Activate with `/ralph-loop` or manually:
+```bash
+python3 -c "
+import json
+from pathlib import Path
+Path('/tmp/ralph_wiggum_state.json').write_text(json.dumps({
+  'active': True, 'max_iterations': 10, 'iteration': 0,
+  'vault_path': 'AI_Employee_Vault',
+  'task_prompt': 'Process all items in /Needs_Action until empty.'
+}))
+"
+```
+
+---
+
+## Odoo Accounting Integration
+
+The Odoo MCP server works in two modes:
+
+**Mock mode** (default, DRY_RUN=true): Returns sample data — no Odoo required. Perfect for demos.
+
+**Live mode**: Set in `.env`:
+```
+ODOO_URL=http://localhost:8069
+ODOO_DB=mydb
+ODOO_USERNAME=admin
+ODOO_PASSWORD=mypassword
+DRY_RUN=false
+```
+
+Odoo API reference: https://www.odoo.com/documentation/19.0/developer/reference/external_api.html
 
 ---
 
 ## Security
 
-- **Credentials**: Stored in `.env` only (`.gitignore`d). Never in the vault.
-- **HITL**: All external actions require a file in `/Approved/` first.
-- **Audit Trail**: Every action logged to `Logs/<date>.json`.
-- **Local-First**: All data stays on your machine.
-- **Sessions**: LinkedIn/WhatsApp browser sessions never synced to git.
-- **Payment Rule**: Any payment > $100 always requires explicit approval.
+| Rule | Detail |
+|------|--------|
+| No credentials in vault | Use `.env` only |
+| HITL for all external sends | Email, social, payments need approval |
+| Payments > $100 | Always manual approval |
+| Rate limits | 10 emails/hr, 3 social posts/hr |
+| Sessions never synced | `.gitignore` covers all session dirs |
+| Audit trail | Every action logged to `Logs/<date>.json` |
 
 ---
 
-## Human-in-the-Loop Workflow
+## Tier Checklist
 
-```
-1. Claude creates:     Pending_Approval/ACTION_<name>.md
-2. You review it:      Open in Obsidian or run /approve-pending
-3. You approve:        Move file → Approved/
-   Or reject:          Move file → Rejected/
-4. Orchestrator acts:  Detects /Approved/ → executes → moves to Done/
-5. Logged:             Logs/<date>.json + Dashboard.md updated
-```
+### Bronze ✅
+- [x] Obsidian vault with Dashboard.md and Company_Handbook.md
+- [x] File system watcher
+- [x] Basic folder structure
+- [x] Agent Skills: /process-inbox, /update-dashboard, /morning-briefing, /start-watcher
 
----
+### Silver ✅
+- [x] Gmail watcher
+- [x] LinkedIn watcher + HITL poster
+- [x] WhatsApp watcher
+- [x] Email MCP server
+- [x] Master Orchestrator with scheduler
+- [x] PM2 config + cron setup
+- [x] Agent Skills: /linkedin-post, /approve-pending, /run-orchestrator
 
-## Silver Tier Checklist
-
-- [x] All Bronze requirements
-- [x] LinkedIn Watcher (`linkedin_watcher.py`) — monitors + posts
-- [x] WhatsApp Watcher (`whatsapp_watcher.py`) — monitors messages
-- [x] Gmail Watcher (`gmail_watcher.py`) — monitors email
-- [x] Auto-post to LinkedIn (HITL-gated)
-- [x] Claude reasoning loop creates `Plan.md` files (enforced in all skills)
-- [x] Email MCP Server (`mcp_servers/email_server.py`) — JSON-RPC 2.0 over stdio
-- [x] Human-in-the-Loop approval workflow (`/approve-pending`)
-- [x] Scheduling: cron (`scripts/setup_cron.sh`) + PM2 (`scripts/pm2.config.js`)
-- [x] Orchestrator (`orchestrator.py`) — routes approved actions
-- [x] All AI functionality as Agent Skills
-
----
-
-## Tier Roadmap
-
-| Tier | Status | Features |
-|------|--------|---------|
-| **Bronze** | ✅ Complete | Vault + FileSystem Watcher + Agent Skills |
-| **Silver** | ✅ Complete | 4 Watchers + LinkedIn Posting + Email MCP + Orchestrator + Scheduling |
-| Gold | 🔲 Next | Odoo accounting + Facebook/Instagram + Ralph Wiggum loop |
-| Platinum | 🔲 Future | Cloud 24/7 + multi-agent + A2A protocol |
+### Gold ✅
+- [x] Twitter/X watcher + poster (Playwright)
+- [x] Facebook watcher + poster (Playwright)
+- [x] Instagram watcher (API note)
+- [x] Social Media MCP server
+- [x] Odoo Community MCP server (JSON-RPC, mock + live modes)
+- [x] Weekly Business & Accounting Audit + CEO Briefing
+- [x] Error recovery: retry_handler.py (exponential backoff, circuit breaker, rate limiter)
+- [x] Process watchdog: watchdog.py (auto-restart, health logging)
+- [x] Ralph Wiggum loop (Stop hook for autonomous multi-step completion)
+- [x] Multiple MCP servers (Email + Social Media + Odoo)
+- [x] Comprehensive audit logging (all events to Logs/<date>.json)
+- [x] Agent Skills: /social-post, /weekly-audit, /ralph-loop, /odoo-query
+- [x] CLAUDE.md + README.md updated to Gold Tier
 
 ---
 
-## Tech Stack
-
-- **Brain**: Claude Code (`claude-sonnet-4-6`)
-- **Memory/GUI**: Obsidian (local Markdown)
-- **Senses**: filesystem_watcher, gmail_watcher, linkedin_watcher, whatsapp_watcher
-- **Hands**: Email MCP Server (SMTP) + LinkedIn Playwright poster
-- **Nervous System**: Orchestrator (approved-file router + scheduler)
-- **Process Management**: PM2 or cron
-
----
-
-*Personal AI Employee Hackathon 0 — Silver Tier — Built with Claude Code*
+*Built with Claude Code · Obsidian · Python · Playwright · PM2*

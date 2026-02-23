@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a **Personal AI Employee** (Digital FTE) — **Silver Tier** ✅
+This is a **Personal AI Employee** (Digital FTE) — **Gold Tier** ✅
 You are an autonomous agent that manages personal and business affairs by reading from
 and writing to the Obsidian vault at `AI_Employee_Vault/`.
 
@@ -34,6 +34,7 @@ AI_Employee_Vault/
 5. **Log every action** to `Logs/<today_date>.json`.
 6. **Update Dashboard.md** after completing any batch of work.
 7. **Always create Plan.md** in `/Plans/` before executing multi-step tasks.
+8. **Ralph Wiggum**: When activated, loop until Needs_Action/ is empty (output `<promise>TASK_COMPLETE</promise>` when done).
 
 ## Workflow
 
@@ -53,6 +54,10 @@ Inbox → Watcher → Needs_Action → Claude reads → Plans/ → Pending_Appro
 | `/linkedin-post` | Draft a LinkedIn business post (HITL) | Silver |
 | `/approve-pending` | Review and approve/reject pending actions | Silver |
 | `/run-orchestrator` | Start the Master Orchestrator | Silver |
+| `/social-post` | Draft multi-platform social post (HITL) | Gold |
+| `/weekly-audit` | Generate weekly CEO business briefing | Gold |
+| `/ralph-loop` | Autonomous multi-step task loop | Gold |
+| `/odoo-query` | Query Odoo accounting/ERP system | Gold |
 
 ## Python Watchers
 
@@ -74,27 +79,48 @@ python3 watchers/whatsapp_watcher.py --vault AI_Employee_Vault
 
 # Master Orchestrator (watches /Approved/ + handles scheduling)
 python3 orchestrator.py --vault AI_Employee_Vault
+
+# ── Gold Tier ─────────────────────────────────────────────────────────────────
+# Twitter/X watcher (run --setup first)
+python3 watchers/twitter_watcher.py --vault AI_Employee_Vault --setup
+python3 watchers/twitter_watcher.py --vault AI_Employee_Vault
+
+# Facebook watcher (run --setup first)
+python3 watchers/facebook_watcher.py --vault AI_Employee_Vault --setup
+python3 watchers/facebook_watcher.py --vault AI_Employee_Vault
+
+# Instagram watcher (run --setup first)
+python3 watchers/instagram_watcher.py --vault AI_Employee_Vault --setup
+python3 watchers/instagram_watcher.py --vault AI_Employee_Vault
+
+# Process watchdog (monitors & restarts all watchers)
+python3 scripts/watchdog.py --vault AI_Employee_Vault
+
+# Weekly business audit + CEO briefing
+python3 scripts/weekly_audit.py --vault AI_Employee_Vault
 ```
 
-## MCP Servers (Silver Tier)
+## MCP Servers (Silver + Gold Tier)
 
 ```bash
-# Email MCP Server (configured in .mcp.json — auto-loaded by Claude Code)
-# Test SMTP connection:
+# Email MCP Server
 python3 mcp_servers/email_server.py --test
 
-# Send an approved email:
-python3 mcp_servers/email_server.py --send-approved AI_Employee_Vault/Approved/EMAIL_draft.md
+# Social Media MCP Server (Gold Tier)
+python3 mcp_servers/social_media_server.py --test
 
-# List pending drafts:
-python3 mcp_servers/email_server.py --list-drafts
+# Odoo Accounting MCP Server (Gold Tier)
+python3 mcp_servers/odoo_server.py --test
 ```
 
 ## Scheduling
 
 ```bash
-# Set up cron jobs (Linux/WSL2)
+# Set up cron jobs (Linux/WSL2) — Silver tier
 bash scripts/setup_cron.sh
+
+# Set up Gold tier cron (adds weekly audit Monday 7am)
+bash scripts/setup_cron_gold.sh
 
 # Start with PM2 (recommended — always-on, auto-restart)
 pm2 start scripts/pm2.config.js
@@ -110,11 +136,32 @@ sudo service cron start
 - Credentials go in `.env` (already in `.gitignore`)
 - All sensitive actions require human approval (HITL)
 - Payments > $100 always require approval regardless of automation level
-- LinkedIn/WhatsApp sessions stored locally (never synced to git)
+- LinkedIn/WhatsApp/Twitter/Facebook/Instagram sessions stored locally (never synced to git)
+- Rate limits: max 10 emails/hr, max 3 social posts/hr, max 3 payments/day
 
-## Plan Creation (Silver Tier Requirement)
+## Gold Tier: Error Recovery
 
-For every multi-step task, create a plan file FIRST:
+The system now includes:
+- `watchers/retry_handler.py` — exponential backoff + circuit breaker + rate limiter
+- `scripts/watchdog.py` — process health monitor with auto-restart
+- All watchers handle `TransientError` for graceful degradation
+
+## Gold Tier: Ralph Wiggum Loop
+
+The Stop hook (`scripts/ralph_wiggum_hook.py`) enables autonomous persistence:
+- Configured in `.claude/settings.local.json`
+- Activates when `/ralph-loop` skill is used
+- Loops until `Needs_Action/` is empty OR `<promise>TASK_COMPLETE</promise>` is output
+- Max 10 iterations as safety guard
+
+## Gold Tier: Odoo Accounting
+
+Odoo Community integration via `mcp_servers/odoo_server.py`:
+- Works in mock/demo mode without Odoo installed (DRY_RUN=true)
+- Set ODOO_URL, ODOO_DB, ODOO_USERNAME, ODOO_PASSWORD in `.env` to connect
+- Docker setup: `docker run -p 8069:8069 odoo:17`
+
+## Plan Creation (Required for Multi-Step Tasks)
 
 ```markdown
 # /Plans/PLAN_<task_name>_<date>.md

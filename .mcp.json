@@ -12,6 +12,29 @@
         "VAULT_PATH": "AI_Employee_Vault",
         "DRY_RUN": "${DRY_RUN}"
       }
+    },
+    "social_media": {
+      "command": "python3",
+      "args": ["mcp_servers/social_media_server.py"],
+      "env": {
+        "VAULT_PATH": "AI_Employee_Vault",
+        "TWITTER_SESSION_PATH": "${TWITTER_SESSION_PATH}",
+        "FACEBOOK_SESSION_PATH": "${FACEBOOK_SESSION_PATH}",
+        "INSTAGRAM_SESSION_PATH": "${INSTAGRAM_SESSION_PATH}",
+        "DRY_RUN": "${DRY_RUN}"
+      }
+    },
+    "odoo": {
+      "command": "python3",
+      "args": ["mcp_servers/odoo_server.py"],
+      "env": {
+        "ODOO_URL": "${ODOO_URL}",
+        "ODOO_DB": "${ODOO_DB}",
+        "ODOO_USERNAME": "${ODOO_USERNAME}",
+        "ODOO_PASSWORD": "${ODOO_PASSWORD}",
+        "VAULT_PATH": "AI_Employee_Vault",
+        "DRY_RUN": "${DRY_RUN}"
+      }
     }
   }
 }

@@ -3,7 +3,21 @@
     "allow": [
       "Bash(python3:*)",
       "Bash(pm2 start:*)",
-      "Bash(bash scripts/setup_cron.sh)"
+      "Bash(bash scripts/setup_cron.sh)",
+      "Bash(bash scripts/setup_cron_gold.sh)",
+      "Bash(python3 scripts/ralph_wiggum_hook.py 2>&1; echo \"Exit code: $?\")"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/ralph_wiggum_hook.py"
+          }
+        ]
+      }
     ]
   }
 }

@@ -540,5 +540,12 @@
     "detail": "Google App Password confirmed as owner-created (Gmail MCP/SMTP integration)",
     "file": "APPROVAL_SECURITY_GoogleAppPassword_20260222b.md",
     "result": "archived_to_done"
+  },
+  {
+    "timestamp": "2026-02-22T15:35:20.487893",
+    "event_type": "linkedin_post_failed",
+    "actor": "Orchestrator",
+    "file": "LINKEDIN_POST_2026-02-22.md",
+    "result": "failed"
   }
 ]
