@@ -4,6 +4,18 @@ watchers/credentials.json
 watchers/token.json
 AI_Employee_Vault/.gmail_state.json
 
+# Browser sessions — local only, never commit
+.linkedin_session/
+.whatsapp_session/
+.twitter_session/
+.facebook_session/
+.instagram_session/
+
+# Watcher state files
+AI_Employee_Vault/.twitter_state.json
+AI_Employee_Vault/.facebook_state.json
+AI_Employee_Vault/.instagram_state.json
+
 # Python
 __pycache__/
 *.py[cod]
