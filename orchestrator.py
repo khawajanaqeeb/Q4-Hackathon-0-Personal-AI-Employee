@@ -8,7 +8,7 @@ The Orchestrator is the "nervous system" that ties all Silver Tier components to
    - EMAIL_*.md      → Email MCP Server (send_approved_email)
    - LINKEDIN_POST_* → LinkedIn Watcher (post_to_linkedin)
    - WHATSAPP_*.md   → WhatsApp (log reply — actual send is manual)
-   - Generic         → Log and move to Done/
+   - Generic         → ⚠️ Write NEEDS_MANUAL_ACTION notice to /Needs_Action/ + move to Done/
 
 3. Watches /Inbox/ for new files (delegates to FileSystemWatcher)
 4. Scheduled tasks:
@@ -166,14 +166,61 @@ def handle_linkedin_post(approved_file: Path):
         _log_event("linkedin_error", {"file": approved_file.name, "error": str(e)})
 
 
-def handle_generic(approved_file: Path):
-    """Log and move generic approved files to Done/."""
-    logger.info(f"Approved action file processed: {approved_file.name}")
-    _log_event("generic_approved", {"file": approved_file.name})
+def handle_generic(approved_file: Path, action: str = "unknown"):
+    """
+    Fallback for approved files the orchestrator cannot execute automatically.
+    Writes a NEEDS_MANUAL_ACTION notice to /Needs_Action/ so the owner is alerted,
+    then archives the approval file to Done/.
+    """
+    logger.warning(
+        f"⚠️  No automated handler for action '{action}' "
+        f"(file: {approved_file.name}). Manual action required — "
+        f"notification written to Needs_Action/."
+    )
+
+    # Read original file for context to include in the notice
+    try:
+        original_content = approved_file.read_text()
+    except Exception:
+        original_content = "(could not read original approval file)"
+
+    # Write a NEEDS_MANUAL_ACTION notice into Needs_Action/
     if not DRY_RUN:
-        _move_to_done(approved_file, "approved")
+        needs_action_dir = VAULT_PATH / "Needs_Action"
+        needs_action_dir.mkdir(exist_ok=True)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        notice_path = needs_action_dir / f"NEEDS_MANUAL_ACTION_{ts}_{approved_file.stem[:20]}.md"
+        notice_path.write_text(
+            f"---\n"
+            f"type: manual_action_required\n"
+            f"action: {action}\n"
+            f"source_file: {approved_file.name}\n"
+            f"created: {datetime.now().isoformat()}\n"
+            f"priority: high\n"
+            f"---\n\n"
+            f"# ⚠️ Manual Action Required\n\n"
+            f"The orchestrator **approved** this action but has **no automated handler** for it.\n"
+            f"You need to complete this manually.\n\n"
+            f"## Action\n"
+            f"**Type:** `{action}`\n"
+            f"**Approval file:** `{approved_file.name}`\n\n"
+            f"## Original Approval Details\n\n"
+            f"{original_content}\n\n"
+            f"---\n"
+            f"_Created by: Orchestrator (unhandled action fallback)_\n"
+        )
+        logger.info(f"Manual action notice written: {notice_path.name}")
+
+    _log_event("manual_action_required", {
+        "file": approved_file.name,
+        "action": action,
+        "reason": "No automated handler for this action type",
+    })
+
+    if not DRY_RUN:
+        _move_to_done(approved_file, "needs_manual_action")
     else:
-        logger.info(f"[DRY RUN] Would move {approved_file.name} to Done/")
+        logger.info(f"[DRY RUN] Would move {approved_file.name} to Done/ and write notice")
 
 
 def route_approved_file(approved_file: Path):
@@ -200,9 +247,9 @@ def route_approved_file(approved_file: Path):
             elif action == "post_to_linkedin":
                 handle_linkedin_post(approved_file)
             else:
-                handle_generic(approved_file)
+                handle_generic(approved_file, action=action)
         except Exception:
-            handle_generic(approved_file)
+            handle_generic(approved_file, action="unknown")
 
 
 # ─── Approved Folder Watcher ──────────────────────────────────────────────────
