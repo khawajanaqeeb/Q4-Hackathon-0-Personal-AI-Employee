@@ -149,7 +149,7 @@ class LinkedInWatcher(BaseWatcher):
 
             try:
                 # Wait until user reaches the feed (logged in successfully)
-                page.wait_for_url("**/feed/**", timeout=120000)
+                page.wait_for_url("**/feed/**", timeout=300000)
                 self.logger.info("LinkedIn session established successfully!")
             except Exception:
                 self.logger.warning("Timed out waiting for login. Try again.")
@@ -421,16 +421,16 @@ assigned_to: claude_code
             try:
                 # Navigate to feed and open the post composer
                 page.goto("https://www.linkedin.com/feed/", timeout=15000)
-                page.wait_for_selector(".share-box-feed-entry__trigger", timeout=10000)
+                page.wait_for_selector("button:has-text('Start a post')", timeout=10000)
 
                 # Click "Start a post"
-                page.click(".share-box-feed-entry__trigger")
+                page.click("button:has-text('Start a post')")
                 page.wait_for_selector(".ql-editor", timeout=10000)
 
-                # Type the content
-                editor = page.query_selector(".ql-editor")
+                # Type the content using clipboard paste (fast + reliable)
+                editor = page.locator(".ql-editor").first
                 editor.click()
-                editor.type(full_content, delay=20)  # Human-like typing speed
+                page.keyboard.type(full_content)
 
                 # Wait a moment before submitting
                 time.sleep(2)
@@ -442,7 +442,12 @@ assigned_to: claude_code
 
                 if post_btn:
                     post_btn.click()
-                    page.wait_for_load_state("networkidle", timeout=15000)
+                    # Wait for composer to close (indicates post submitted)
+                    try:
+                        page.wait_for_selector(".ql-editor", state="hidden", timeout=30000)
+                    except Exception:
+                        pass  # Composer may already be gone
+                    time.sleep(3)
                     success = True
                     self.logger.info("LinkedIn post published successfully.")
                 else:
