@@ -25,6 +25,9 @@ dist/
 build/
 .uv/
 
+# ── Vault operational files — runtime data, NEVER commit ────────────────────
+AI_Employee_Vault/Dashboard.md
+
 # ── Vault operational folders — runtime data, NEVER commit ──────────────────
 # These contain live activity (emails, social notifications, approvals, logs).
 # Only code changes to watchers/scripts/mcp_servers should be committed.
