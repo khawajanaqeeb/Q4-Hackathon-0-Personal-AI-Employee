@@ -1,0 +1,3 @@
+[submodule "mcp-odoo-adv"]
+	path = mcp-odoo-adv
+	url = https://github.com/AlanOgic/mcp-odoo-adv.git
