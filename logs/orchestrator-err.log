@@ -1,7 +1,0 @@
-2026-02-24 03:47:06 [Orchestrator] INFO: Orchestrator starting — vault: /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault
-2026-02-24 03:47:06 [Orchestrator] INFO: Dry-run: False | Scheduling: True
-2026-02-24 03:47:06 [Orchestrator] INFO: Watching /Approved/ for human-approved actions.
-2026-02-24 03:47:06 [Orchestrator] INFO: Scheduler active: 4 tasks registered.
-2026-02-24 03:52:09 [Orchestrator] INFO: Scheduled task: morning-briefing
-2026-02-24 03:57:14 [Orchestrator] INFO: Scheduled task: morning-briefing
-2026-02-24 04:02:18 [Orchestrator] INFO: Scheduled task: morning-briefing

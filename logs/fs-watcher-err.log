@@ -1,3 +1,0 @@
-2026-02-24 03:47:06 [FileSystemWatcher] INFO: Monitoring /Inbox at: /mnt/f/Q4-Hackathon-0-Personal-AI-Employee/AI_Employee_Vault/Inbox
-2026-02-24 03:47:06 [FileSystemWatcher] INFO: Drop files into /Inbox to trigger AI processing.
-2026-02-24 03:47:06 [FileSystemWatcher] INFO: Using PollingObserver (WSL2/Windows filesystem detected).

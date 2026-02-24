@@ -25,13 +25,35 @@ dist/
 build/
 .uv/
 
-# Logs (optional — you may want to track these)
-# AI_Employee_Vault/Logs/
+# ── Vault operational folders — runtime data, NEVER commit ──────────────────
+# These contain live activity (emails, social notifications, approvals, logs).
+# Only code changes to watchers/scripts/mcp_servers should be committed.
+AI_Employee_Vault/Logs/
+AI_Employee_Vault/Needs_Action/*
+!AI_Employee_Vault/Needs_Action/.gitkeep
+AI_Employee_Vault/Done/*
+!AI_Employee_Vault/Done/.gitkeep
+AI_Employee_Vault/Inbox/*
+!AI_Employee_Vault/Inbox/.gitkeep
+AI_Employee_Vault/Pending_Approval/*
+!AI_Employee_Vault/Pending_Approval/.gitkeep
+AI_Employee_Vault/Approved/*
+!AI_Employee_Vault/Approved/.gitkeep
+AI_Employee_Vault/Rejected/*
+!AI_Employee_Vault/Rejected/.gitkeep
+AI_Employee_Vault/Briefings/*
+!AI_Employee_Vault/Briefings/.gitkeep
+AI_Employee_Vault/Plans/*
+!AI_Employee_Vault/Plans/.gitkeep
+
+# Process logs (stdout/stderr from watchers) — runtime noise, never commit
+logs/
 
 # OS
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Obsidian (workspace is user-specific, but .obsidian config should be tracked)
+# Obsidian — workspace state is user-specific, never commit
 AI_Employee_Vault/.obsidian/workspace.json
+.obsidian/workspace.json
