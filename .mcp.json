@@ -26,14 +26,13 @@
     },
     "odoo": {
       "command": "python3",
-      "args": ["mcp_servers/odoo_server.py"],
+      "args": ["mcp-odoo-adv/run_server.py"],
       "env": {
         "ODOO_URL": "${ODOO_URL}",
         "ODOO_DB": "${ODOO_DB}",
         "ODOO_USERNAME": "${ODOO_USERNAME}",
         "ODOO_PASSWORD": "${ODOO_PASSWORD}",
-        "VAULT_PATH": "AI_Employee_Vault",
-        "DRY_RUN": "${DRY_RUN}"
+        "ODOO_API_VERSION": "json-2"
       }
     }
   }
