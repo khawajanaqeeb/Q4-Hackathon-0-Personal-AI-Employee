@@ -1,8 +1,8 @@
-# Personal AI Employee — Gold Tier ✅
+# Personal AI Employee — Platinum Tier ✅
 
-> *Your life and business on autopilot. Local-first, agent-driven, human-in-the-loop.*
+> *Your life and business on autopilot. Cloud + Local, always-on, human-in-the-loop.*
 
-A **Digital FTE (Full-Time Equivalent)** powered by Claude Code and Obsidian. The Gold Tier adds Twitter/X, Facebook, Instagram, Odoo accounting, Ralph Wiggum autonomous loop, error recovery, process watchdog, and weekly CEO briefing — transforming the Silver assistant into a fully **Autonomous Employee**.
+A **Digital FTE (Full-Time Equivalent)** powered by Claude Code and Obsidian. The Platinum Tier adds a **Cloud Agent** that runs 24/7 on a VM, a **Git-synced vault** for Cloud/Local state sharing, and a **claim-by-move protocol** that prevents double-work — transforming the Gold local assistant into a true **always-on cloud employee**.
 
 ---
 
@@ -58,6 +58,21 @@ External Sources (Gmail, LinkedIn, WhatsApp, Twitter/X, Facebook, Instagram, Fil
   │  retry_handler.py — exponential backoff          │
   │  ralph_wiggum_hook.py — autonomous loop (Stop hook) │
   └──────────────────────────────────────────────────┘
+
+         ┌──────────────────────────────────────────────────┐
+         │         PLATINUM: CLOUD + LOCAL SPLIT            │
+         │                                                  │
+         │  CLOUD VM (24/7)        LOCAL (on-demand)        │
+         │  ──────────────         ──────────────           │
+         │  cloud_agent.py    ←──→ orchestrator.py          │
+         │  gmail-watcher          WhatsApp, payments       │
+         │  vault_sync.py   ←git→  vault_sync.py            │
+         │  Odoo (Docker+HTTPS)    Odoo MCP client          │
+         │                                                  │
+         │  Claim protocol: move Needs_Action/ →            │
+         │    In_Progress/cloud/ or In_Progress/local/      │
+         │  Signals/ → merge_signals.py → Dashboard.md      │
+         └──────────────────────────────────────────────────┘
 ```
 
 ---
@@ -138,6 +153,8 @@ bash scripts/setup_cron_gold.sh
 | `/weekly-audit` | Generate weekly CEO business briefing | **Gold** |
 | `/ralph-loop` | Autonomous multi-step task loop | **Gold** |
 | `/odoo-query` | Query Odoo accounting/ERP | **Gold** |
+| `/sync-vault` | Git pull/push vault + report incoming drafts | **Platinum** |
+| `/cloud-status` | Cloud Agent activity + pending cloud drafts | **Platinum** |
 
 ---
 
@@ -172,6 +189,20 @@ bash scripts/setup_cron_gold.sh
 | `scripts/ralph_wiggum_hook.py` | Stop hook — keeps Claude looping until work is done |
 | `scripts/weekly_audit.py` | Weekly business + accounting audit → CEO briefing |
 | `scripts/setup_cron_gold.sh` | Installs Gold Tier cron jobs |
+
+### Platinum Tier Scripts
+
+| File | Purpose |
+|------|---------|
+| `scripts/cloud_agent.py` | Cloud Agent — email triage + social drafts (24/7 VM) |
+| `scripts/vault_sync.py` | Git vault sync daemon (pull/push, 5-min interval) |
+| `scripts/merge_signals.py` | Merge Cloud signals into Dashboard.md (local) |
+| `scripts/cloud_pm2.config.js` | PM2 config for cloud VM processes |
+| `scripts/setup_cloud.sh` | Bootstrap script for Ubuntu 22.04 cloud VM |
+| `scripts/odoo_cloud_setup.sh` | Odoo + Caddy HTTPS on cloud VM |
+| `scripts/odoo_docker_compose.yml` | Docker Compose for Odoo Community |
+| `scripts/setup_cron_platinum.sh` | Installs Platinum Tier cron jobs |
+| `scripts/demo_platinum.sh` | End-to-end Platinum demo script |
 
 ---
 
@@ -264,6 +295,117 @@ Odoo API reference: https://www.odoo.com/documentation/19.0/developer/reference/
 - [x] Agent Skills: /social-post, /weekly-audit, /ralph-loop, /odoo-query
 - [x] CLAUDE.md + README.md updated to Gold Tier
 
+### Platinum ✅
+- [x] `scripts/cloud_agent.py` — 24/7 Cloud Agent (email triage + social drafts)
+- [x] `scripts/vault_sync.py` — Git-based vault sync daemon (pull/push)
+- [x] `scripts/merge_signals.py` — Cloud signal merger → Dashboard.md
+- [x] `scripts/cloud_pm2.config.js` — PM2 config for cloud VM
+- [x] `scripts/setup_cloud.sh` — Ubuntu 22.04 bootstrap script
+- [x] `scripts/odoo_cloud_setup.sh` — Odoo + Caddy HTTPS on cloud VM
+- [x] `scripts/odoo_docker_compose.yml` — Docker Compose for Odoo Community
+- [x] `scripts/setup_cron_platinum.sh` — Platinum cron jobs
+- [x] `scripts/demo_platinum.sh` — End-to-end demo automation
+- [x] `AI_Employee_Vault/In_Progress/` — Claim-by-move directories (cloud/ + local/)
+- [x] `AI_Employee_Vault/Signals/` — Cloud→Local status signal channel
+- [x] `orchestrator.py` updated — AGENT_MODE, claim_task(), merge_signals integration, CLOUD_DRAFT_* routing
+- [x] `scripts/pm2.config.js` updated — vault-sync entry added
+- [x] `.env.example` updated — Platinum env vars
+- [x] `.mcp.json` updated — vault_sync MCP entry
+- [x] Agent Skills: /sync-vault, /cloud-status
+- [x] CLAUDE.md + README.md updated to Platinum Tier
+
 ---
 
-*Built with Claude Code · Obsidian · Python · Playwright · PM2*
+## Platinum Tier: Cloud Deployment Guide
+
+### Prerequisites
+- Ubuntu 22.04 VM (Oracle Cloud Free Tier works great)
+- Domain name with DNS A record pointing to VM (for Odoo HTTPS)
+- Git repository (GitHub/GitLab) for vault sync
+- SSH key pair for VM access
+
+### Step 1: Clone and bootstrap the cloud VM
+
+```bash
+# SSH into your cloud VM
+ssh ubuntu@<your-vm-ip>
+
+# Clone your repo
+git clone git@github.com:yourusername/ai-employee.git ~/ai-employee
+cd ~/ai-employee
+
+# Run bootstrap (installs Python, Node, PM2, Docker, Playwright, Caddy)
+bash scripts/setup_cloud.sh
+```
+
+### Step 2: Configure secrets
+
+```bash
+nano .env
+# Set at minimum:
+#   AGENT_MODE=cloud
+#   GIT_REMOTE_URL=git@github.com:yourusername/ai-employee.git
+#   GMAIL_CREDENTIALS_PATH=watchers/credentials.json
+#   SMTP_USER=your@email.com
+#   SMTP_PASSWORD=your-app-password
+```
+
+### Step 3: Set up Gmail OAuth on the VM
+
+```bash
+# Copy credentials.json from your local machine
+scp watchers/credentials.json ubuntu@<vm-ip>:~/ai-employee/watchers/
+
+# Authorize (opens URL for browser auth — copy/paste into your browser)
+python3 watchers/gmail_watcher.py --vault AI_Employee_Vault --setup
+```
+
+### Step 4: Configure Git remote and vault sync
+
+```bash
+# Ensure remote is set
+git remote add origin git@github.com:yourusername/ai-employee.git
+
+# Test sync
+python3 scripts/vault_sync.py --vault AI_Employee_Vault --once
+```
+
+### Step 5: Start cloud processes
+
+```bash
+pm2 start scripts/cloud_pm2.config.js
+pm2 save
+
+# Check status
+pm2 status
+pm2 logs cloud-agent
+```
+
+### Step 6: Set up Odoo (optional)
+
+```bash
+ODOO_DOMAIN=odoo.yourdomain.com bash scripts/odoo_cloud_setup.sh
+```
+
+### Step 7: On your local machine — enable vault sync
+
+```bash
+# Add to local pm2
+pm2 start scripts/pm2.config.js
+
+# Or run vault sync manually
+python3 scripts/vault_sync.py --vault AI_Employee_Vault --interval 300
+
+# Check cloud status
+/cloud-status   (in Claude Code)
+```
+
+### Step 8: Run the demo
+
+```bash
+bash scripts/demo_platinum.sh
+```
+
+---
+
+*Built with Claude Code · Obsidian · Python · Playwright · PM2 · Docker · Caddy*

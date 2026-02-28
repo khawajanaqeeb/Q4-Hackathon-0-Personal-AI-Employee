@@ -66,7 +66,8 @@ def load_state() -> dict:
             return json.loads(STATE_FILE.read_text())
         except (json.JSONDecodeError, OSError):
             pass
-    return DEFAULT_STATE.copy()
+    # No state file = Ralph Wiggum not activated. Exit silently.
+    return {"active": False}
 
 
 def save_state(state: dict):

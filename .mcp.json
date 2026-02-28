@@ -32,7 +32,16 @@
         "ODOO_DB": "${ODOO_DB}",
         "ODOO_USERNAME": "${ODOO_USERNAME}",
         "ODOO_PASSWORD": "${ODOO_PASSWORD}",
-        "ODOO_API_VERSION": "json-2"
+        "ODOO_API_VERSION": "${ODOO_API_VERSION}"
+      }
+    },
+    "vault_sync": {
+      "command": "python3",
+      "args": ["scripts/vault_sync.py", "--vault", "AI_Employee_Vault", "--once"],
+      "env": {
+        "VAULT_PATH": "AI_Employee_Vault",
+        "GIT_VAULT_BRANCH": "${GIT_VAULT_BRANCH}",
+        "DRY_RUN": "${DRY_RUN}"
       }
     }
   }

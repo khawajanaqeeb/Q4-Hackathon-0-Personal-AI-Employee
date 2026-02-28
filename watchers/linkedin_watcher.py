@@ -57,6 +57,14 @@ logging.basicConfig(
 
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 
+# Default auto-reply text for messages with no business keywords.
+# Override via LINKEDIN_AUTO_REPLY in .env
+LINKEDIN_AUTO_REPLY = os.getenv(
+    "LINKEDIN_AUTO_REPLY",
+    "Hi, thanks for reaching out! I've received your message and will get back to you shortly. "
+    "If this is regarding a business opportunity, feel free to include more details in your next message.",
+)
+
 # Keywords that signal a message needs AI attention
 PRIORITY_KEYWORDS = [
     "urgent", "asap", "invoice", "payment", "proposal",
@@ -262,15 +270,14 @@ class LinkedInWatcher(BaseWatcher):
                         thread_id = f"msg_{hash(sender + preview)}"
 
                         if thread_id not in self.processed_ids:
-                            # Only surface messages with priority keywords
-                            if self._detect_priority(preview + " " + sender) in ("P0", "P1"):
-                                items.append({
-                                    "type": "message",
-                                    "id": thread_id,
-                                    "sender": sender,
-                                    "preview": preview[:300],
-                                    "priority": self._detect_priority(preview),
-                                })
+                            priority = self._detect_priority(preview + " " + sender)
+                            items.append({
+                                "type": "message",
+                                "id": thread_id,
+                                "sender": sender,
+                                "preview": preview[:300],
+                                "priority": priority,
+                            })
                     except Exception:
                         pass
 
@@ -295,13 +302,47 @@ class LinkedInWatcher(BaseWatcher):
         return "P3"
 
     def create_action_file(self, item: dict) -> Path:
-        """Create a .md action file for a LinkedIn notification or message."""
+        """Create a .md action file for a LinkedIn notification or message.
+
+        For messages with no business keywords (priority P3) an auto-reply is
+        sent immediately and a log entry is written to Done/ instead of
+        Needs_Action/ — no human review needed.
+        """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         item_type = item.get("type", "notification")
         priority = item.get("priority", "P2")
         item_id = str(item.get("id", timestamp))
+        sender = item.get("sender", "Unknown")
 
         filename = f"LINKEDIN_{item_type.upper()}_{timestamp}.md"
+
+        # ── Auto-reply path: no keywords, message type ─────────────────────
+        if item_type == "message" and priority == "P3":
+            done_dir = self.vault_path / "Done"
+            done_dir.mkdir(exist_ok=True)
+            done_file = done_dir / filename
+
+            if self.dry_run:
+                self.logger.info(f"[DRY RUN] Would auto-reply to LinkedIn message from: {sender}")
+            else:
+                success = LinkedInWatcher.send_message_reply(
+                    str(self.session_path), sender, LINKEDIN_AUTO_REPLY
+                )
+                done_file.write_text(
+                    f"---\ntype: linkedin_auto_replied\nsender: {sender}\n"
+                    f"created: {datetime.now().isoformat()}\nauto_reply_sent: {success}\n---\n\n"
+                    f"Auto-replied to LinkedIn message (no business keywords detected).\n\n"
+                    f"**Reply sent:** {LINKEDIN_AUTO_REPLY}\n"
+                )
+                self.log_event("linkedin_auto_reply_sent", {
+                    "sender": sender, "success": success, "file": filename,
+                })
+
+            self.processed_ids.add(item_id)
+            self._save_processed_ids()
+            return done_dir / filename
+        # ───────────────────────────────────────────────────────────────────
+
         action_file = self.needs_action / filename
 
         if self.dry_run:
@@ -463,6 +504,90 @@ assigned_to: claude_code
             "content_preview": full_content[:100],
             "success": success,
         })
+
+        return success
+
+    @classmethod
+    def send_message_reply(cls, session_path: str, sender: str, reply_text: str) -> bool:
+        """
+        Send a reply to a LinkedIn message thread.
+
+        Navigates to linkedin.com/messaging/, finds the thread by sender name,
+        and sends the reply text.
+
+        Args:
+            session_path: Path to persistent Chromium session directory
+            sender:       Display name of the message sender (used to find the thread)
+            reply_text:   Text to send as the reply
+
+        Returns:
+            True if reply was sent successfully, False otherwise
+        """
+        sync_playwright = _load_playwright()
+        success = False
+        logger = logging.getLogger("LinkedInWatcher")
+
+        session = Path(session_path)
+        if not session.exists():
+            logger.error(f"LinkedIn session not found: {session_path}")
+            return False
+
+        with sync_playwright() as p:
+            context = p.chromium.launch_persistent_context(
+                str(session),
+                headless=True,
+                args=["--no-sandbox", "--disable-dev-shm-usage"],
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/120.0.0.0 Safari/537.36"
+                ),
+            )
+            page = context.pages[0] if context.pages else context.new_page()
+            try:
+                page.goto("https://www.linkedin.com/messaging/", timeout=15000)
+                page.wait_for_selector(".msg-conversations-container", timeout=10000)
+
+                # Find the thread matching the sender name
+                threads = page.query_selector_all(".msg-conversation-listitem")
+                target_thread = None
+                for thread in threads:
+                    try:
+                        name_el = thread.query_selector(".msg-conversation-listitem__participant-names")
+                        if name_el and sender.lower() in name_el.inner_text().lower():
+                            target_thread = thread
+                            break
+                    except Exception:
+                        continue
+
+                if not target_thread:
+                    logger.error(f"Could not find LinkedIn thread for sender: {sender}")
+                    context.close()
+                    return False
+
+                target_thread.click()
+                page.wait_for_selector(".msg-form__contenteditable", timeout=10000)
+
+                # Type the reply
+                input_box = page.locator(".msg-form__contenteditable").first
+                input_box.click()
+                page.keyboard.type(reply_text)
+                time.sleep(1)
+
+                # Click send button
+                send_btn = page.query_selector(".msg-form__send-button")
+                if send_btn:
+                    send_btn.click()
+                    time.sleep(2)
+                    success = True
+                    logger.info(f"LinkedIn reply sent to: {sender}")
+                else:
+                    logger.error("Could not find LinkedIn send button")
+
+            except Exception as e:
+                logger.error(f"LinkedIn send_message_reply failed: {e}")
+            finally:
+                context.close()
 
         return success
 

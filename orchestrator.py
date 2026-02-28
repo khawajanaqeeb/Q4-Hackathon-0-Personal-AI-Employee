@@ -5,16 +5,23 @@ The Orchestrator is the "nervous system" that ties all Silver Tier components to
 
 1. Watches /Approved/ folder for human-approved action files
 2. Routes approved actions to the right executor:
-   - EMAIL_*.md      → Email MCP Server (send_approved_email)
-   - LINKEDIN_POST_* → LinkedIn Watcher (post_to_linkedin)
-   - WHATSAPP_*.md   → WhatsApp (log reply — actual send is manual)
-   - Generic         → ⚠️ Write NEEDS_MANUAL_ACTION notice to /Needs_Action/ + move to Done/
+   - EMAIL_*.md          → Email MCP Server (send_approved_email)
+   - CLOUD_DRAFT_EMAIL_* → Email MCP Server (send approved cloud drafts)
+   - LINKEDIN_POST_*     → LinkedIn Watcher (post_to_linkedin)
+   - WHATSAPP_*.md       → WhatsApp (log reply — actual send is manual)
+   - Generic             → ⚠️ Write NEEDS_MANUAL_ACTION notice to /Needs_Action/ + move to Done/
 
 3. Watches /Inbox/ for new files (delegates to FileSystemWatcher)
 4. Scheduled tasks:
    - Every 30 min: trigger /process-inbox (via claude --print)
    - Every day @ 8AM: trigger /morning-briefing
    - Every Sunday @ 7PM: trigger weekly audit
+   - Every 30 min (local mode): merge Cloud Agent signals into Dashboard.md
+
+5. Platinum Tier — Claim-by-move protocol:
+   - claim_task(): atomic move Needs_Action/ → In_Progress/<agent>/
+   - Skips files already claimed in any In_Progress/ subdirectory
+   - AGENT_MODE=local: merges Cloud signals on startup + every 30 min
 
 Usage:
     python orchestrator.py --vault AI_Employee_Vault
@@ -26,6 +33,7 @@ Environment variables:
     DRY_RUN=true        Log actions without executing them
     SCHEDULE=false      Disable cron-style scheduling
     CLAUDE_CMD          Override claude command (default: claude)
+    AGENT_MODE          "local" (default) or "cloud"
 """
 
 import os
@@ -64,6 +72,7 @@ logger = logging.getLogger("Orchestrator")
 VAULT_PATH  = Path(os.getenv("VAULT_PATH", "AI_Employee_Vault")).resolve()
 DRY_RUN     = os.getenv("DRY_RUN", "false").lower() == "true"
 CLAUDE_CMD  = os.getenv("CLAUDE_CMD", "claude")
+AGENT_MODE  = os.getenv("AGENT_MODE", "local")  # "local" or "cloud"
 
 
 def _is_wsl() -> bool:
@@ -117,6 +126,71 @@ def _move_to_rejected(file_path: Path, reason: str = ""):
     logger.info(f"Moved to Rejected/: {dest.name}" + (f" ({reason})" if reason else ""))
 
 
+# ─── Platinum Tier: Claim-by-Move Protocol ────────────────────────────────────
+
+def claim_task(file_path: Path, agent: str = "local") -> "Path | None":
+    """
+    Atomic claim: move file from Needs_Action/ → In_Progress/<agent>/.
+    Returns the new path if claimed, None if already claimed.
+    Prevents double-processing when Cloud and Local agents share the vault.
+    """
+    in_progress_agent = VAULT_PATH / "In_Progress" / agent
+    in_progress_agent.mkdir(parents=True, exist_ok=True)
+
+    dest = in_progress_agent / file_path.name
+    if dest.exists():
+        logger.debug(f"Already claimed by {agent}: {file_path.name}")
+        return None
+
+    if DRY_RUN:
+        logger.info(f"[DRY RUN] Would claim: {file_path.name} → In_Progress/{agent}/")
+        return file_path
+
+    try:
+        shutil.move(str(file_path), str(dest))
+        logger.info(f"Claimed: {file_path.name} → In_Progress/{agent}/")
+        _log_event("task_claimed", {"file": file_path.name, "agent": agent})
+        return dest
+    except (FileNotFoundError, PermissionError) as e:
+        logger.debug(f"Claim race-condition (another agent got there first): {file_path.name} — {e}")
+        return None
+
+
+def _is_already_in_progress(filename: str) -> bool:
+    """Return True if file is in any In_Progress/ subdirectory."""
+    in_progress = VAULT_PATH / "In_Progress"
+    if not in_progress.exists():
+        return False
+    for subdir in in_progress.iterdir():
+        if subdir.is_dir() and (subdir / filename).exists():
+            return True
+    return False
+
+
+def _merge_cloud_signals():
+    """Call merge_signals.py to update Dashboard.md with Cloud Agent status."""
+    if DRY_RUN:
+        logger.info("[DRY RUN] Would merge cloud signals")
+        return
+    try:
+        merge_script = Path(__file__).parent / "scripts" / "merge_signals.py"
+        if merge_script.exists():
+            result = subprocess.run(
+                [sys.executable, str(merge_script), "--vault", str(VAULT_PATH)],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            if result.returncode == 0:
+                logger.info("Cloud signals merged into Dashboard.md")
+            else:
+                logger.warning(f"merge_signals.py exited {result.returncode}: {result.stderr[:200]}")
+        else:
+            logger.debug("merge_signals.py not found — skipping signal merge")
+    except Exception as e:
+        logger.warning(f"Cloud signal merge failed: {e}")
+
+
 # ─── Action Handlers ──────────────────────────────────────────────────────────
 
 def handle_email(approved_file: Path):
@@ -143,27 +217,349 @@ def handle_email(approved_file: Path):
         _log_event("email_error", {"file": approved_file.name, "error": str(e)})
 
 
-def handle_linkedin_post(approved_file: Path):
-    """Publish an approved LinkedIn post."""
-    logger.info(f"Publishing LinkedIn post: {approved_file.name}")
+def handle_linkedin(approved_file: Path):
+    """Handle approved LinkedIn files: message replies or feed posts."""
+    import re
+
+    name = approved_file.name.upper()
+    is_reply = "REPLY" in name
 
     if DRY_RUN:
-        logger.info(f"[DRY RUN] Would post to LinkedIn from: {approved_file.name}")
+        logger.info(f"[DRY RUN] Would handle LinkedIn file: {approved_file.name}")
+        _move_to_done(approved_file, "dry_run")
+        return
+
+    if is_reply:
+        logger.info(f"Sending LinkedIn message reply: {approved_file.name}")
+        try:
+            raw = approved_file.read_text()
+            sender_match = re.search(r"^sender:\s*(.+)$", raw, re.MULTILINE)
+            sender = sender_match.group(1).strip() if sender_match else "Unknown"
+            reply_match = re.search(r"^##\s+Reply\s*\n([\s\S]+?)(?=\n##|\Z)", raw, re.MULTILINE)
+            reply_text = reply_match.group(1).strip() if reply_match else ""
+            if not reply_text:
+                logger.error(f"No reply text found in: {approved_file.name}")
+                _move_to_done(approved_file, "no_reply_text")
+                return
+            sys.path.insert(0, str(Path(__file__).parent))
+            from watchers.linkedin_watcher import LinkedInWatcher
+            session_path = os.getenv("LINKEDIN_SESSION_PATH", ".linkedin_session")
+            success = LinkedInWatcher.send_message_reply(session_path, sender, reply_text)
+            if success:
+                _log_event("linkedin_reply_sent", {"file": approved_file.name, "sender": sender, "result": "success"})
+                _move_to_done(approved_file, "linkedin_reply_sent")
+            else:
+                _log_event("linkedin_reply_failed", {"file": approved_file.name, "sender": sender, "result": "failed"})
+                _move_to_done(approved_file, "linkedin_reply_failed")
+        except Exception as e:
+            logger.error(f"LinkedIn reply handler error: {e}", exc_info=True)
+            _log_event("linkedin_error", {"file": approved_file.name, "error": str(e)})
+            _move_to_done(approved_file, "error")
+    else:
+        logger.info(f"Publishing LinkedIn post: {approved_file.name}")
+        try:
+            sys.path.insert(0, str(Path(__file__).parent))
+            from watchers.linkedin_watcher import post_from_approved_file
+            success = post_from_approved_file(str(VAULT_PATH), approved_file, dry_run=DRY_RUN)
+            if success:
+                _log_event("linkedin_posted", {"file": approved_file.name, "result": "success"})
+            else:
+                _log_event("linkedin_post_failed", {"file": approved_file.name, "result": "failed"})
+        except Exception as e:
+            logger.error(f"LinkedIn post handler error: {e}", exc_info=True)
+            _log_event("linkedin_error", {"file": approved_file.name, "error": str(e)})
+
+
+def handle_instagram(approved_file: Path):
+    """Handle approved Instagram files.
+
+    - INSTAGRAM_POST_* / APPROVAL_INSTAGRAM_POST_* → post to feed via InstagramWatcher
+    - INSTAGRAM_DM_* / APPROVAL_INSTAGRAM_REPLY_* → DM replies (log + archive;
+      automated DM sending is blocked by Meta on web)
+    """
+    name = approved_file.name.upper()
+    is_post = "POST" in name or ("REPLY" not in name and "DM" not in name and "NOTIFICATION" not in name)
+
+    if DRY_RUN:
+        logger.info(f"[DRY RUN] Would handle Instagram file: {approved_file.name}")
+        _move_to_done(approved_file, "dry_run")
+        return
+
+    if is_post:
+        logger.info(f"Posting to Instagram feed from: {approved_file.name}")
+        try:
+            raw = approved_file.read_text()
+            import re
+            caption_match = re.search(r"^(?:caption|content|text|post):\s*(.+)$", raw, re.MULTILINE | re.IGNORECASE)
+            caption = caption_match.group(1).strip() if caption_match else raw[:280]
+            sys.path.insert(0, str(Path(__file__).parent))
+            from watchers.instagram_watcher import InstagramWatcher
+            session_path = os.getenv("INSTAGRAM_SESSION_PATH", ".instagram_session")
+            result = InstagramWatcher.post_to_feed(session_path, image_path="", caption=caption, dry_run=DRY_RUN)
+            if result.get("success"):
+                _log_event("instagram_posted", {"file": approved_file.name, "result": "success"})
+                _move_to_done(approved_file, "instagram_posted")
+            else:
+                logger.error(f"Instagram post failed: {result.get('error')}")
+                _log_event("instagram_post_failed", {"file": approved_file.name, "error": result.get("error")})
+                _move_to_done(approved_file, "instagram_post_failed")
+        except Exception as e:
+            logger.error(f"Instagram handler error: {e}", exc_info=True)
+            _log_event("instagram_error", {"file": approved_file.name, "error": str(e)})
+            _move_to_done(approved_file, "error")
+    else:
+        # DM notification or reply — automated DM sending blocked by Meta; archive as reviewed
+        logger.info(f"Instagram DM/notification acknowledged and archived: {approved_file.name}")
+        _log_event("instagram_dm_acknowledged", {"file": approved_file.name})
+        _move_to_done(approved_file, "acknowledged")
+
+
+def handle_facebook(approved_file: Path):
+    """Handle approved Facebook files.
+
+    - APPROVAL_FACEBOOK_REPLY_* / action == send_facebook_reply → send Messenger reply
+    - FACEBOOK_POST_* / APPROVAL_FACEBOOK_POST_* → post to page via FacebookWatcher
+    - FACEBOOK_NOTIFICATION_* → acknowledge and archive
+    """
+    import re
+
+    name = approved_file.name.upper()
+    is_reply = "REPLY" in name
+    is_post = not is_reply and ("POST" in name or ("NOTIFICATION" not in name and "DM" not in name))
+
+    if DRY_RUN:
+        logger.info(f"[DRY RUN] Would handle Facebook file: {approved_file.name}")
+        _move_to_done(approved_file, "dry_run")
+        return
+
+    if is_reply:
+        logger.info(f"Sending Facebook Messenger reply: {approved_file.name}")
+        try:
+            raw = approved_file.read_text()
+            sender_match = re.search(r"^sender:\s*(.+)$", raw, re.MULTILINE)
+            sender = sender_match.group(1).strip() if sender_match else "Unknown"
+            reply_match = re.search(r"^##\s+Reply\s*\n([\s\S]+?)(?=\n##|\Z)", raw, re.MULTILINE)
+            reply_text = reply_match.group(1).strip() if reply_match else ""
+            if not reply_text:
+                logger.error(f"No reply text found in: {approved_file.name}")
+                _move_to_done(approved_file, "no_reply_text")
+                return
+            sys.path.insert(0, str(Path(__file__).parent))
+            from watchers.facebook_watcher import FacebookWatcher
+            session_path = os.getenv("FACEBOOK_SESSION_PATH", ".facebook_session")
+            result = FacebookWatcher.send_messenger_reply(session_path, sender=sender, reply_text=reply_text)
+            if result.get("success"):
+                _log_event("facebook_reply_sent", {"file": approved_file.name, "sender": sender, "result": "success"})
+                _move_to_done(approved_file, "facebook_reply_sent")
+            else:
+                logger.error(f"Facebook reply failed: {result.get('error')}")
+                _log_event("facebook_reply_failed", {"file": approved_file.name, "sender": sender, "error": result.get("error")})
+                _move_to_done(approved_file, "facebook_reply_failed")
+        except Exception as e:
+            logger.error(f"Facebook reply handler error: {e}", exc_info=True)
+            _log_event("facebook_error", {"file": approved_file.name, "error": str(e)})
+            _move_to_done(approved_file, "error")
+    elif is_post:
+        logger.info(f"Posting to Facebook from: {approved_file.name}")
+        try:
+            raw = approved_file.read_text()
+            text_match = re.search(r"^(?:content|text|post|message):\s*(.+)$", raw, re.MULTILINE | re.IGNORECASE)
+            text = text_match.group(1).strip() if text_match else raw[:500]
+            sys.path.insert(0, str(Path(__file__).parent))
+            from watchers.facebook_watcher import FacebookWatcher
+            session_path = os.getenv("FACEBOOK_SESSION_PATH", ".facebook_session")
+            result = FacebookWatcher.post_to_page(session_path, text=text, dry_run=DRY_RUN)
+            if result.get("success"):
+                _log_event("facebook_posted", {"file": approved_file.name, "result": "success"})
+                _move_to_done(approved_file, "facebook_posted")
+            else:
+                logger.error(f"Facebook post failed: {result.get('error')}")
+                _log_event("facebook_post_failed", {"file": approved_file.name, "error": result.get("error")})
+                _move_to_done(approved_file, "facebook_post_failed")
+        except Exception as e:
+            logger.error(f"Facebook post handler error: {e}", exc_info=True)
+            _log_event("facebook_error", {"file": approved_file.name, "error": str(e)})
+            _move_to_done(approved_file, "error")
+    else:
+        logger.info(f"Facebook notification acknowledged and archived: {approved_file.name}")
+        _log_event("facebook_notification_acknowledged", {"file": approved_file.name})
+        _move_to_done(approved_file, "acknowledged")
+
+
+def handle_odoo(approved_file: Path):
+    """Handle approved Odoo actions: create partner and draft invoice or quotation.
+
+    Reads frontmatter from APPROVAL_ODOO_*.md:
+        partner_name: Client Name
+        amount: 15000
+        description: Website development — Phase 1
+        odoo_action: invoice   (or "quotation")
+    """
+    import re
+
+    logger.info(f"Processing Odoo action: {approved_file.name}")
+
+    if DRY_RUN:
+        logger.info(f"[DRY RUN] Would process Odoo action: {approved_file.name}")
         _move_to_done(approved_file, "dry_run")
         return
 
     try:
+        raw = approved_file.read_text()
+
+        def _fm(key: str, default: str = "") -> str:
+            m = re.search(rf"^{key}:\s*(.+)$", raw, re.MULTILINE)
+            return m.group(1).strip() if m else default
+
+        partner_name = _fm("partner_name")
+        amount_str = _fm("amount", "0")
+        description = _fm("description", "Service")
+        odoo_action = _fm("odoo_action", "invoice").lower()  # "invoice" or "quotation"
+
+        try:
+            amount = float(amount_str)
+        except ValueError:
+            amount = 0.0
+
+        if not partner_name:
+            logger.error(f"No partner_name in Odoo action file: {approved_file.name}")
+            _move_to_done(approved_file, "error_no_partner")
+            return
+
         sys.path.insert(0, str(Path(__file__).parent))
-        from watchers.linkedin_watcher import post_from_approved_file
-        session_path = os.getenv("LINKEDIN_SESSION_PATH", ".linkedin_session")
-        success = post_from_approved_file(str(VAULT_PATH), approved_file, dry_run=DRY_RUN)
-        if success:
-            _log_event("linkedin_posted", {"file": approved_file.name, "result": "success"})
+        from mcp_servers.odoo_server import OdooClient
+        odoo_dry_run = os.getenv("DRY_RUN", "true").lower() == "true" or os.getenv("ODOO_URL", "") == ""
+
+        if odoo_dry_run:
+            logger.info(f"[ODOO MOCK] Would create partner '{partner_name}' and {odoo_action} for ${amount:.2f}")
+            _log_event("odoo_action_mock", {
+                "file": approved_file.name,
+                "partner_name": partner_name,
+                "amount": amount,
+                "odoo_action": odoo_action,
+                "result": "mock_success",
+            })
+            _move_to_done(approved_file, "odoo_mock")
+            return
+
+        odoo = OdooClient(
+            os.getenv("ODOO_URL", "http://localhost:8069"),
+            os.getenv("ODOO_DB", "odoo"),
+            os.getenv("ODOO_USERNAME", "admin"),
+            os.getenv("ODOO_PASSWORD", "admin"),
+        )
+        odoo.authenticate()
+
+        # Search for existing partner
+        partners = odoo.search_read(
+            "res.partner",
+            [["name", "ilike", partner_name]],
+            ["id", "name"],
+            limit=1,
+        )
+        if partners:
+            partner_id = partners[0]["id"]
+            logger.info(f"Found existing Odoo partner: {partner_name} (id={partner_id})")
         else:
-            _log_event("linkedin_post_failed", {"file": approved_file.name, "result": "failed"})
+            partner_id = odoo.create("res.partner", {"name": partner_name, "customer_rank": 1})
+            logger.info(f"Created new Odoo partner: {partner_name} (id={partner_id})")
+
+        if odoo_action == "quotation":
+            order_id = odoo.create("sale.order", {
+                "partner_id": partner_id,
+                "order_line": [(0, 0, {"name": description, "price_unit": amount, "product_uom_qty": 1})],
+            })
+            logger.info(f"Created Odoo quotation id={order_id} for {partner_name}")
+            _log_event("odoo_quotation_created", {
+                "file": approved_file.name,
+                "partner_name": partner_name,
+                "amount": amount,
+                "order_id": order_id,
+                "result": "success",
+            })
+        else:
+            invoice_id = odoo.create("account.move", {
+                "move_type": "out_invoice",
+                "partner_id": partner_id,
+                "invoice_line_ids": [(0, 0, {"name": description, "price_unit": amount, "quantity": 1})],
+            })
+            logger.info(f"Created Odoo draft invoice id={invoice_id} for {partner_name}")
+            _log_event("odoo_invoice_created", {
+                "file": approved_file.name,
+                "partner_name": partner_name,
+                "amount": amount,
+                "invoice_id": invoice_id,
+                "result": "success",
+            })
+
+        _move_to_done(approved_file, f"odoo_{odoo_action}_created")
+
     except Exception as e:
-        logger.error(f"LinkedIn handler error: {e}", exc_info=True)
-        _log_event("linkedin_error", {"file": approved_file.name, "error": str(e)})
+        logger.error(f"Odoo handler error: {e}", exc_info=True)
+        _log_event("odoo_error", {"file": approved_file.name, "error": str(e)})
+        _move_to_done(approved_file, "odoo_error")
+
+
+def handle_twitter(approved_file: Path):
+    """Handle approved Twitter/X files — post tweet via TwitterWatcher."""
+    logger.info(f"Posting tweet from: {approved_file.name}")
+
+    if DRY_RUN:
+        logger.info(f"[DRY RUN] Would tweet from: {approved_file.name}")
+        _move_to_done(approved_file, "dry_run")
+        return
+
+    try:
+        raw = approved_file.read_text()
+        import re
+        text_match = re.search(r"^(?:content|text|tweet|post|message):\s*(.+)$", raw, re.MULTILINE | re.IGNORECASE)
+        text = text_match.group(1).strip() if text_match else raw[:280]
+        sys.path.insert(0, str(Path(__file__).parent))
+        from watchers.twitter_watcher import TwitterWatcher
+        session_path = os.getenv("TWITTER_SESSION_PATH", ".twitter_session")
+        result = TwitterWatcher.post_tweet(session_path, text=text, dry_run=DRY_RUN)
+        if result.get("success"):
+            _log_event("tweet_posted", {"file": approved_file.name, "result": "success"})
+            _move_to_done(approved_file, "tweet_posted")
+        else:
+            logger.error(f"Tweet failed: {result.get('error')}")
+            _log_event("tweet_failed", {"file": approved_file.name, "error": result.get("error")})
+            _move_to_done(approved_file, "tweet_failed")
+    except Exception as e:
+        logger.error(f"Twitter handler error: {e}", exc_info=True)
+        _log_event("twitter_error", {"file": approved_file.name, "error": str(e)})
+        _move_to_done(approved_file, "error")
+
+
+def handle_whatsapp(approved_file: Path):
+    """Handle approved WhatsApp files.
+
+    WhatsApp Web automation is session-only; log the intent and archive.
+    Actual message sending requires manual action in WhatsApp Web.
+    """
+    logger.info(f"WhatsApp action acknowledged (manual send required): {approved_file.name}")
+    _log_event("whatsapp_action_logged", {"file": approved_file.name, "note": "Manual send required via WhatsApp Web"})
+
+    # Write a reminder to Needs_Action so the owner knows to send it manually
+    if not DRY_RUN:
+        needs_action_dir = VAULT_PATH / "Needs_Action"
+        needs_action_dir.mkdir(exist_ok=True)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        notice = needs_action_dir / f"WHATSAPP_SEND_{ts}.md"
+        try:
+            original = approved_file.read_text()
+        except Exception:
+            original = "(could not read file)"
+        notice.write_text(
+            f"---\ntype: whatsapp_manual_send\npriority: high\ncreated: {datetime.now().isoformat()}\n---\n\n"
+            f"# 📱 Send this WhatsApp Message Manually\n\n"
+            f"Open WhatsApp Web and send the message below.\n\n"
+            f"## Original Approval\n\n{original}\n\n"
+            f"---\n_Created by Orchestrator — WhatsApp send requires manual action_\n"
+        )
+        logger.info(f"WhatsApp manual send notice created: {notice.name}")
+
+    _move_to_done(approved_file, "whatsapp_logged")
 
 
 def handle_generic(approved_file: Path, action: str = "unknown"):
@@ -223,6 +619,48 @@ def handle_generic(approved_file: Path, action: str = "unknown"):
         logger.info(f"[DRY RUN] Would move {approved_file.name} to Done/ and write notice")
 
 
+def handle_cloud_draft(approved_file: Path):
+    """
+    Route a Cloud-drafted file that has been approved by the user.
+    CLOUD_DRAFT_EMAIL_* → handle_email (Local sends via Email MCP)
+    CLOUD_DRAFT_SOCIAL_* → dispatch to the right social handler
+    """
+    name = approved_file.name.upper()
+    logger.info(f"Routing approved cloud draft: {approved_file.name}")
+
+    if "EMAIL" in name:
+        handle_email(approved_file)
+    elif "LINKEDIN" in name:
+        handle_linkedin(approved_file)
+    elif "TWITTER" in name:
+        handle_twitter(approved_file)
+    elif "FACEBOOK" in name:
+        handle_facebook(approved_file)
+    elif "INSTAGRAM" in name:
+        handle_instagram(approved_file)
+    else:
+        # Try action field in frontmatter
+        try:
+            import re as _re
+            raw = approved_file.read_text()
+            action_match = _re.search(r"^action:\s*(.+)$", raw, _re.MULTILINE)
+            action = action_match.group(1).strip() if action_match else "unknown"
+            if "email" in action:
+                handle_email(approved_file)
+            elif "linkedin" in action:
+                handle_linkedin(approved_file)
+            elif "twitter" in action:
+                handle_twitter(approved_file)
+            elif "facebook" in action:
+                handle_facebook(approved_file)
+            elif "instagram" in action:
+                handle_instagram(approved_file)
+            else:
+                handle_generic(approved_file, action=f"cloud_draft_{action}")
+        except Exception:
+            handle_generic(approved_file, action="cloud_draft_unknown")
+
+
 def route_approved_file(approved_file: Path):
     """
     Inspect the filename (and optionally frontmatter) to determine
@@ -231,10 +669,25 @@ def route_approved_file(approved_file: Path):
     name = approved_file.name.upper()
     logger.info(f"Routing approved file: {approved_file.name}")
 
+    # Platinum Tier: Cloud-drafted files approved by human
+    if name.startswith("CLOUD_DRAFT_"):
+        handle_cloud_draft(approved_file)
+        return
+
     if name.startswith("EMAIL_"):
         handle_email(approved_file)
-    elif name.startswith("LINKEDIN_POST_"):
-        handle_linkedin_post(approved_file)
+    elif name.startswith("APPROVAL_ODOO_") or ("ODOO" in name and name.startswith("APPROVAL_")):
+        handle_odoo(approved_file)
+    elif name.startswith("LINKEDIN_POST_") or name.startswith("APPROVAL_LINKEDIN_"):
+        handle_linkedin(approved_file)
+    elif name.startswith("INSTAGRAM_") or ("INSTAGRAM" in name and name.startswith("APPROVAL_")):
+        handle_instagram(approved_file)
+    elif name.startswith("FACEBOOK_") or ("FACEBOOK" in name and name.startswith("APPROVAL_")):
+        handle_facebook(approved_file)
+    elif name.startswith("TWITTER_") or ("TWITTER" in name and name.startswith("APPROVAL_")):
+        handle_twitter(approved_file)
+    elif name.startswith("WHATSAPP_") or ("WHATSAPP" in name and name.startswith("APPROVAL_")):
+        handle_whatsapp(approved_file)
     else:
         # Try to read the 'action' field from frontmatter
         try:
@@ -244,8 +697,18 @@ def route_approved_file(approved_file: Path):
             action = action_match.group(1).strip() if action_match else "unknown"
             if action == "send_email":
                 handle_email(approved_file)
-            elif action == "post_to_linkedin":
-                handle_linkedin_post(approved_file)
+            elif action in ("post_to_linkedin", "send_linkedin_reply"):
+                handle_linkedin(approved_file)
+            elif action in ("post_to_instagram", "instagram_dm", "instagram_reply"):
+                handle_instagram(approved_file)
+            elif action in ("post_to_facebook", "facebook_post", "send_facebook_reply"):
+                handle_facebook(approved_file)
+            elif action in ("post_tweet", "twitter_post"):
+                handle_twitter(approved_file)
+            elif action in ("send_whatsapp", "whatsapp_message"):
+                handle_whatsapp(approved_file)
+            elif action in ("create_client_and_invoice", "create_client_and_quotation", "odoo_action"):
+                handle_odoo(approved_file)
             else:
                 handle_generic(approved_file, action=action)
         except Exception:
@@ -372,6 +835,12 @@ def _update_dashboard_task():
     _run_claude_skill("update-dashboard")
 
 
+def _merge_signals_task():
+    """Platinum Tier: merge Cloud Agent signals into Dashboard.md (local mode only)."""
+    if AGENT_MODE == "local":
+        _merge_cloud_signals()
+
+
 # ─── Main Orchestrator Loop ───────────────────────────────────────────────────
 
 def run_orchestrator(vault_path: Path, enable_schedule: bool = True, dry_run: bool = False):
@@ -384,13 +853,19 @@ def run_orchestrator(vault_path: Path, enable_schedule: bool = True, dry_run: bo
     approved_dir.mkdir(exist_ok=True)
 
     logger.info(f"Orchestrator starting — vault: {vault_path}")
-    logger.info(f"Dry-run: {dry_run} | Scheduling: {enable_schedule}")
+    logger.info(f"Dry-run: {dry_run} | Scheduling: {enable_schedule} | Agent mode: {AGENT_MODE}")
 
     _log_event("orchestrator_started", {
         "vault": str(vault_path),
         "dry_run": dry_run,
         "scheduling": enable_schedule,
+        "agent_mode": AGENT_MODE,
     })
+
+    # Platinum Tier: merge cloud signals on startup (local mode)
+    if AGENT_MODE == "local":
+        logger.info("Local mode: merging cloud signals on startup...")
+        _merge_cloud_signals()
 
     # --- Set up /Approved/ folder watcher ---
     observer = _get_observer()
@@ -408,6 +883,12 @@ def run_orchestrator(vault_path: Path, enable_schedule: bool = True, dry_run: bo
             Task("morning-briefing", _morning_briefing_task, interval_seconds=300),   # check every 5 min
             Task("weekly-audit",     _weekly_audit_task,     interval_seconds=3600),  # check hourly
         ]
+        # Platinum Tier: merge cloud signals every 30 min in local mode
+        if AGENT_MODE == "local":
+            scheduled_tasks.append(
+                Task("merge-signals", _merge_signals_task, interval_seconds=1800)
+            )
+            logger.info("Platinum: Cloud signal merge scheduled every 30 min (local mode)")
         logger.info(f"Scheduler active: {len(scheduled_tasks)} tasks registered.")
 
     # --- Main loop ---

@@ -2,27 +2,33 @@
 
 ## Project Overview
 
-This is a **Personal AI Employee** (Digital FTE) — **Gold Tier** ✅
+This is a **Personal AI Employee** (Digital FTE) — **Platinum Tier** ✅
 You are an autonomous agent that manages personal and business affairs by reading from
 and writing to the Obsidian vault at `AI_Employee_Vault/`.
+Platinum adds a Cloud Agent running 24/7 on a VM and a Git-synced vault for
+seamless Cloud/Local coordination.
 
 ## Vault Location
 
 ```
 AI_Employee_Vault/
-├── Dashboard.md          ← Your real-time status board (read/write)
+├── Dashboard.md          ← Your real-time status board (read/write — Local only)
 ├── Company_Handbook.md   ← Your rules of engagement (read only)
 ├── Business_Goals.md     ← Revenue targets and KPIs (read/write)
 ├── Inbox/                ← Drop zone: files land here first
 ├── Needs_Action/         ← Watcher outputs; your primary work queue
+├── In_Progress/          ← Claim-by-move protocol (Platinum Tier)
+│   ├── cloud/            ← Cloud Agent claims (move files here to claim)
+│   └── local/            ← Local Agent claims (move files here to claim)
 ├── Done/                 ← Completed tasks (move files here)
 ├── Plans/                ← Your reasoning plans (create here)
 ├── Logs/                 ← Structured audit log (append here)
-├── Pending_Approval/     ← Human-in-the-Loop queue (create here)
+├── Pending_Approval/     ← Human-in-the-Loop queue (CLOUD_DRAFT_* + local)
 ├── Approved/             ← Human-approved actions (orchestrator monitors)
 ├── Rejected/             ← Rejected actions (archive here)
 ├── Briefings/            ← CEO briefings (create here)
-└── Accounting/           ← Financial data (read/write)
+├── Accounting/           ← Financial data (read/write)
+└── Signals/              ← Cloud writes status signals; Local merges into Dashboard
 ```
 
 ## Core Rules (ALWAYS follow)
@@ -58,6 +64,8 @@ Inbox → Watcher → Needs_Action → Claude reads → Plans/ → Pending_Appro
 | `/weekly-audit` | Generate weekly CEO business briefing | Gold |
 | `/ralph-loop` | Autonomous multi-step task loop | Gold |
 | `/odoo-query` | Query Odoo accounting/ERP system | Gold |
+| `/sync-vault` | Git pull/push vault sync + report | Platinum |
+| `/cloud-status` | Show Cloud Agent activity + pending drafts | Platinum |
 
 ## Python Watchers
 
@@ -96,8 +104,27 @@ python3 watchers/instagram_watcher.py --vault AI_Employee_Vault
 # Process watchdog (monitors & restarts all watchers)
 python3 scripts/watchdog.py --vault AI_Employee_Vault
 
+# Process watchdog (monitors & restarts all watchers)
+python3 scripts/watchdog.py --vault AI_Employee_Vault
+
 # Weekly business audit + CEO briefing
 python3 scripts/weekly_audit.py --vault AI_Employee_Vault
+
+# ── Platinum Tier ─────────────────────────────────────────────────────────────
+# Cloud Agent (run on Cloud VM with AGENT_MODE=cloud)
+AGENT_MODE=cloud python3 scripts/cloud_agent.py --vault AI_Employee_Vault
+
+# Vault Sync daemon (git pull/push every 5 min)
+python3 scripts/vault_sync.py --vault AI_Employee_Vault --interval 300
+
+# Single vault sync (for cron or manual trigger)
+python3 scripts/vault_sync.py --vault AI_Employee_Vault --once
+
+# Merge cloud signals into Dashboard.md (local only)
+python3 scripts/merge_signals.py --vault AI_Employee_Vault
+
+# Full Platinum demo (end-to-end flow)
+bash scripts/demo_platinum.sh
 ```
 
 ## MCP Servers (Silver + Gold Tier)
@@ -122,9 +149,19 @@ bash scripts/setup_cron.sh
 # Set up Gold tier cron (adds weekly audit Monday 7am)
 bash scripts/setup_cron_gold.sh
 
+# Set up Platinum tier cron (vault sync + signal merge + odoo backup)
+bash scripts/setup_cron_platinum.sh
+
 # Start with PM2 (recommended — always-on, auto-restart)
-pm2 start scripts/pm2.config.js
+pm2 start scripts/pm2.config.js           # Local: all watchers + vault-sync
+pm2 start scripts/cloud_pm2.config.js     # Cloud VM: cloud-agent + gmail + vault-sync
 pm2 save && pm2 startup
+
+# Cloud VM setup (Ubuntu 22.04 / Oracle Cloud Free Tier)
+bash scripts/setup_cloud.sh
+
+# Odoo Community with HTTPS (cloud VM)
+ODOO_DOMAIN=odoo.yourdomain.com bash scripts/odoo_cloud_setup.sh
 
 # WSL2: Start cron service
 sudo service cron start
@@ -160,6 +197,48 @@ Odoo Community integration via `mcp_servers/odoo_server.py`:
 - Works in mock/demo mode without Odoo installed (DRY_RUN=true)
 - Set ODOO_URL, ODOO_DB, ODOO_USERNAME, ODOO_PASSWORD in `.env` to connect
 - Docker setup: `docker run -p 8069:8069 odoo:17`
+
+## Platinum Tier: Cloud + Local Architecture
+
+### Cloud/Local Work-Zone Specialisation
+
+| Domain | Cloud Agent | Local Agent |
+|--------|-------------|-------------|
+| Email triage | Draft reply → Pending_Approval/ | Execute approved sends |
+| Social post drafts | Draft-only, HITL-gated | Final post execution |
+| WhatsApp | Never | Session + send |
+| Payments/Banking | Never | HITL-gated |
+| Dashboard.md | Never (writes to Signals/ only) | Single writer |
+| Odoo invoices | Draft-only | Post/confirm with approval |
+
+### Claim-by-Move Protocol
+
+Prevents double-processing when Cloud and Local share the vault:
+1. Cloud Agent: `mv Needs_Action/FILE.md In_Progress/cloud/FILE.md`
+2. Local Agent: checks `In_Progress/*/FILE.md` — skips if already claimed
+3. After processing: move to `Done/` or release back to `Needs_Action/`
+
+### Vault Sync (Git-based)
+
+```
+Cloud VM                          Git Remote              Local Machine
+─────────                         ──────────              ─────────────
+vault_sync.py (push) ──────────→ ← pull ── vault_sync.py
+cloud_agent.py writes             Signals/                orchestrator reads
+Pending_Approval/  ─────────────→ ← pull ── /approve-pending
+```
+
+- Never synced: `.env`, `*.json` credentials, session directories
+- Conflict strategy: prefer remote for `Needs_Action/` and `Signals/`
+- Signal files in `Signals/` are read by `merge_signals.py` → Dashboard.md
+
+### Platinum Demo
+
+```bash
+bash scripts/demo_platinum.sh
+```
+
+Simulates: Gmail → Cloud claim → draft email → Pending_Approval/ → approve → Local send.
 
 ## Plan Creation (Required for Multi-Step Tasks)
 

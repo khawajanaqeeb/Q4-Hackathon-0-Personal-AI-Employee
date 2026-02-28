@@ -33,7 +33,37 @@ from base_watcher import BaseWatcher
 
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+# gmail.send is needed for auto-reply.  Adding it requires re-running --setup
+# once to re-authorize (delete watchers/token.json to force re-auth).
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+]
+
+# Keywords that flag an email as needing human review / Claude processing.
+# Emails whose snippet contains NONE of these get an auto-reply instead.
+BUSINESS_KEYWORDS = [
+    # Money & transactions
+    "invoice", "payment", "quote", "quotation", "pricing", "price", "cost",
+    "fee", "refund", "budget", "deposit", "contract", "proposal",
+    # Work & hiring
+    "hire", "hiring", "job", "freelance", "retainer", "project", "scope",
+    "deliverable", "deadline", "milestone",
+    # Business development
+    "partnership", "collaboration", "opportunity", "consulting", "agency",
+    "service", "meeting", "call", "discuss", "negotiate",
+    # Urgency
+    "urgent", "asap", "immediately", "emergency", "critical", "legal",
+    "dispute", "complaint", "issue", "problem", "broken", "outage",
+]
+
+# Auto-reply text for low-priority emails.  Override via GMAIL_AUTO_REPLY in .env
+GMAIL_AUTO_REPLY = os.getenv(
+    "GMAIL_AUTO_REPLY",
+    "Thank you for your email! I've received your message and will respond as soon as possible. "
+    "If this is urgent or relates to a business matter, please mention it in your follow-up "
+    "and I'll prioritise it accordingly.",
+)
 
 
 class GmailWatcher(BaseWatcher):
@@ -129,18 +159,59 @@ class GmailWatcher(BaseWatcher):
             self.logger.info(f"Found {len(new_messages)} new important messages.")
         return new_messages
 
+    def _send_auto_reply(self, message_id: str, thread_id: str, headers: dict) -> bool:
+        """Send an auto-reply to a Gmail message using the Gmail API.
+
+        Constructs a proper RFC 2822 reply with In-Reply-To / References headers
+        so the reply appears in the same thread.
+        """
+        import base64
+        from email.mime.text import MIMEText
+
+        try:
+            to_addr = headers.get("From", "")
+            if not to_addr:
+                return False
+
+            subject = headers.get("Subject", "")
+            reply_subject = subject if subject.lower().startswith("re:") else f"Re: {subject}"
+            msg_id_header = headers.get("Message-ID", message_id)
+
+            reply = MIMEText(GMAIL_AUTO_REPLY)
+            reply["To"] = to_addr
+            reply["Subject"] = reply_subject
+            reply["In-Reply-To"] = msg_id_header
+            reply["References"] = msg_id_header
+
+            raw = base64.urlsafe_b64encode(reply.as_bytes()).decode()
+            self.service.users().messages().send(
+                userId="me",
+                body={"raw": raw, "threadId": thread_id},
+            ).execute()
+            self.logger.info(f"Auto-replied to email from: {to_addr}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Gmail auto-reply failed: {e}")
+            return False
+
     def create_action_file(self, message: dict) -> Path:
-        """Create a .md action file from a Gmail message."""
+        """Create a .md action file from a Gmail message.
+
+        Emails whose snippet contains business keywords go to Needs_Action/
+        for Claude to process.  All other emails receive an auto-reply and
+        are logged to Done/ without entering the review queue.
+        """
         msg = self.service.users().messages().get(
             userId="me",
             id=message["id"],
             format="metadata",
-            metadataHeaders=["From", "Subject", "Date", "To"],
+            metadataHeaders=["From", "Subject", "Date", "To", "Message-ID"],
         ).execute()
 
         headers = {h["name"]: h["value"] for h in msg["payload"]["headers"]}
         snippet = msg.get("snippet", "")
         labels = msg.get("labelIds", [])
+        thread_id = msg.get("threadId", message["id"])
 
         # Determine priority from labels
         priority = "P1" if "IMPORTANT" in labels else "P2"
@@ -148,7 +219,44 @@ class GmailWatcher(BaseWatcher):
             priority = "P1"
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        action_file = self.needs_action / f"EMAIL_{timestamp}_{message['id'][:8]}.md"
+        filename = f"EMAIL_{timestamp}_{message['id'][:8]}.md"
+
+        # ── Auto-reply path: no business keywords in snippet ───────────────
+        snippet_lower = snippet.lower()
+        has_keywords = any(kw in snippet_lower for kw in BUSINESS_KEYWORDS)
+
+        if not has_keywords:
+            done_dir = self.vault_path / "Done"
+            done_dir.mkdir(exist_ok=True)
+            done_file = done_dir / filename
+
+            if DRY_RUN:
+                self.logger.info(
+                    f"[DRY RUN] Would auto-reply to email from: {headers.get('From', 'Unknown')}"
+                )
+            else:
+                success = self._send_auto_reply(message["id"], thread_id, headers)
+                done_file.write_text(
+                    f"---\ntype: email_auto_replied\n"
+                    f"from: {headers.get('From', 'Unknown')}\n"
+                    f"subject: {headers.get('Subject', 'No Subject')}\n"
+                    f"created: {datetime.now().isoformat()}\nauto_reply_sent: {success}\n---\n\n"
+                    f"Auto-replied to email (no business keywords detected in snippet).\n\n"
+                    f"**Reply sent:** {GMAIL_AUTO_REPLY}\n"
+                )
+                self.log_event("email_auto_reply_sent", {
+                    "message_id": message["id"],
+                    "from": headers.get("From", "Unknown"),
+                    "subject": headers.get("Subject", "No Subject"),
+                    "success": success,
+                })
+
+            self.processed_ids.add(message["id"])
+            self._save_processed_ids()
+            return done_file
+        # ───────────────────────────────────────────────────────────────────
+
+        action_file = self.needs_action / filename
 
         if DRY_RUN:
             self.logger.info(f"[DRY RUN] Would create: {action_file.name}")

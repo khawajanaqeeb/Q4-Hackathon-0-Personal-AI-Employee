@@ -254,16 +254,17 @@ class InstagramWatcher(BaseWatcher):
                     text = thread.inner_text().strip()
                     if not text:
                         continue
-                    keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
-                    if not keywords_found:
-                        continue
                     thread_id = f"ig_dm_{hash(text) & 0xFFFFFF:06x}"
                     if thread_id in self._processed_ids:
                         continue
+                    keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
+                    # Extract rough sender name from first line
+                    sender = text.split("\n")[0].strip()[:80] if "\n" in text else text[:80]
                     items.append({
                         "type": "dm",
                         "id": thread_id,
                         "text": text[:500],
+                        "sender": sender,
                         "keywords": keywords_found,
                         "timestamp": datetime.now().isoformat(),
                     })
@@ -274,10 +275,41 @@ class InstagramWatcher(BaseWatcher):
         return items
 
     def create_action_file(self, item: dict) -> Path:
+        """Create action file for an Instagram item.
+
+        DMs with no business keywords are marked as processed and logged to
+        Done/ automatically.  NOTE: Instagram auto-reply via web automation
+        is blocked by Meta — a manual reply notice is written instead.
+        DMs/notifications with keywords go to Needs_Action/ for review.
+        """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"INSTAGRAM_{item['type'].upper()}_{timestamp}_{item['id'][:8]}.md"
         keywords = item.get("keywords", [])
         priority = "high" if keywords else "normal"
+        sender = item.get("sender", "")
+
+        # ── No-keyword DM: mark as processed, log to Done/ ─────────────────
+        if item["type"] == "dm" and not keywords:
+            done_dir = self.vault_path / "Done"
+            done_dir.mkdir(exist_ok=True)
+            done_file = done_dir / filename
+            done_file.write_text(
+                f"---\ntype: instagram_dm_triaged\nsender: {sender}\n"
+                f"created: {datetime.now().isoformat()}\nauto_reply_sent: false\n"
+                f"reason: Meta blocks automated DM sending on Instagram web\n---\n\n"
+                f"Instagram DM from **{sender}** contained no business keywords.\n\n"
+                f"Auto-reply is **not available** for Instagram (Meta blocks web DM automation).\n"
+                f"If a reply is needed, open Instagram manually and respond.\n\n"
+                f"**Message preview:** {item.get('text', '')[:200]}\n"
+            )
+            self._processed_ids.add(item["id"])
+            self._save_processed()
+            self.log_event("instagram_dm_triaged", {
+                "sender": sender, "auto_reply": False,
+                "reason": "no_keywords_meta_blocks_web_dm", "file": filename,
+            })
+            return done_file
+        # ───────────────────────────────────────────────────────────────────
 
         content = f"""---
 type: instagram_{item['type']}
@@ -286,6 +318,7 @@ id: {item['id']}
 received: {item.get("timestamp", datetime.now().isoformat())}
 priority: {priority}
 status: pending
+sender: {sender}
 keywords_detected: {", ".join(keywords) if keywords else "none"}
 ---
 

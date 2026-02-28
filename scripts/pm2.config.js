@@ -28,6 +28,9 @@
  *   - instagram-watcher
  *   - watchdog (process health monitor)
  *   - weekly-audit (cron: every Monday 7am)
+ *
+ * Platinum Tier additions:
+ *   - vault-sync (git pull/push daemon, every 5 min)
  */
 
 const path = require("path");
@@ -127,24 +130,26 @@ module.exports = {
     },
 
     // ── LinkedIn Watcher ──────────────────────────────────────────────────────
-    // Uncomment when LinkedIn account is ready:
-    // {
-    //   name: "linkedin-watcher",
-    //   script: PYTHON,
-    //   args: `watchers/linkedin_watcher.py --vault ${VAULT}`,
-    //   cwd: ROOT,
-    //   interpreter: "none",
-    //   restart_delay: 10000,
-    //   max_restarts: 5,
-    //   autorestart: true,
-    //   watch: false,
-    //   env: {
-    //     LINKEDIN_EMAIL: envOrDefault("LINKEDIN_EMAIL", ""),
-    //     LINKEDIN_PASSWORD: envOrDefault("LINKEDIN_PASSWORD", ""),
-    //     LINKEDIN_SESSION_PATH: envOrDefault("LINKEDIN_SESSION_PATH", path.join(ROOT, ".linkedin_session")),
-    //     DRY_RUN: envOrDefault("DRY_RUN", "false"),
-    //   },
-    // },
+    {
+      name: "linkedin-watcher",
+      script: PYTHON,
+      args: `watchers/linkedin_watcher.py --vault ${VAULT}`,
+      cwd: ROOT,
+      interpreter: "none",
+      restart_delay: 10000,
+      max_restarts: 5,
+      autorestart: true,
+      watch: false,
+      env: {
+        LINKEDIN_EMAIL: envOrDefault("LINKEDIN_EMAIL", ""),
+        LINKEDIN_PASSWORD: envOrDefault("LINKEDIN_PASSWORD", ""),
+        LINKEDIN_SESSION_PATH: envOrDefault("LINKEDIN_SESSION_PATH", path.join(ROOT, ".linkedin_session")),
+        DRY_RUN: envOrDefault("DRY_RUN", "false"),
+      },
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      error_file: path.join(ROOT, "logs", "linkedin-watcher-error.log"),
+      out_file: path.join(ROOT, "logs", "linkedin-watcher-out.log"),
+    },
 
     // ── WhatsApp Watcher ──────────────────────────────────────────────────────
     // NOTE: Run --setup manually first to scan the QR code.
@@ -229,6 +234,29 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss",
       error_file: path.join(ROOT, "logs", "instagram-watcher-error.log"),
       out_file: path.join(ROOT, "logs", "instagram-watcher-out.log"),
+    },
+
+    // ── Vault Sync (Platinum Tier) — git pull/push daemon ─────────────────────
+    {
+      name: "vault-sync",
+      script: PYTHON,
+      args: `scripts/vault_sync.py --vault ${VAULT} --interval 300`,
+      cwd: ROOT,
+      interpreter: "none",
+      restart_delay: 10000,
+      max_restarts: 10,
+      autorestart: true,
+      watch: false,
+      env: {
+        VAULT_PATH: VAULT,
+        GIT_VAULT_BRANCH: envOrDefault("GIT_VAULT_BRANCH", "main"),
+        VAULT_SYNC_INTERVAL: envOrDefault("VAULT_SYNC_INTERVAL", "300"),
+        AGENT_MODE: envOrDefault("AGENT_MODE", "local"),
+        DRY_RUN: envOrDefault("DRY_RUN", "false"),
+      },
+      log_date_format: "YYYY-MM-DD HH:mm:ss",
+      error_file: path.join(ROOT, "logs", "vault-sync-error.log"),
+      out_file: path.join(ROOT, "logs", "vault-sync-out.log"),
     },
 
     // ── Weekly Audit (Gold Tier) — runs every Monday at 7:00 AM ───────────────

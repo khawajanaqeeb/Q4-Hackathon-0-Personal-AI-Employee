@@ -40,6 +40,14 @@ logger = logging.getLogger("FacebookWatcher")
 ROOT = Path(__file__).resolve().parent.parent
 VAULT_DEFAULT = ROOT / "AI_Employee_Vault"
 
+# Default auto-reply for Messenger DMs with no business keywords.
+# Override via FACEBOOK_AUTO_REPLY in .env
+FACEBOOK_AUTO_REPLY = os.getenv(
+    "FACEBOOK_AUTO_REPLY",
+    "Hi, thanks for your message! I've received it and will get back to you soon. "
+    "For urgent matters or business enquiries, please include more details in your follow-up.",
+)
+
 BUSINESS_KEYWORDS = [
     # Sales & transactions
     "invoice", "payment", "quote", "pricing", "price", "cost", "fee",
@@ -113,12 +121,64 @@ class FacebookWatcher(BaseWatcher):
                 page = browser.pages[0] if browser.pages else browser.new_page()
                 notifications = self._get_notifications(page)
                 items.extend(notifications)
+                dms = self._get_dms(page)
+                items.extend(dms)
                 browser.close()
         except PlaywrightTimeout:
             logger.warning("Playwright timeout during Facebook check.")
         except Exception as e:
             logger.error(f"Facebook check failed: {e}")
 
+        return items
+
+    def _get_dms(self, page) -> list:
+        """Scrape unread Messenger threads and return them as items."""
+        items = []
+        try:
+            page.goto("https://www.facebook.com/messages/", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(4000)
+
+            THREAD_SELECTORS = [
+                '[role="row"]',
+                '[role="listitem"]',
+                'div[data-testid="mwthreadlist-item"]',
+                'a[href*="/messages/t/"]',
+            ]
+            threads = []
+            for sel in THREAD_SELECTORS:
+                found = page.query_selector_all(sel)
+                if found:
+                    threads = found
+                    logger.info(f"Facebook DMs: found {len(found)} threads with selector '{sel}'")
+                    break
+
+            if not threads:
+                logger.info("Facebook DMs: no threads found (may require login or page has different structure).")
+                return items
+
+            for thread in threads[:10]:
+                try:
+                    text = thread.inner_text().strip()
+                    if not text:
+                        continue
+                    thread_id = f"fb_dm_{hash(text) & 0xFFFFFF:06x}"
+                    if thread_id in self._processed_ids:
+                        continue
+                    # Extract a rough sender name from first line of thread text
+                    sender = text.split("\n")[0].strip()[:80] if "\n" in text else text[:80]
+                    keywords_found = [kw for kw in BUSINESS_KEYWORDS if kw in text.lower()]
+                    items.append({
+                        "type": "dm",
+                        "id": thread_id,
+                        "text": text[:500],
+                        "sender": sender,
+                        "keywords": keywords_found,
+                        "timestamp": datetime.now().isoformat(),
+                    })
+                except Exception:
+                    continue
+        except Exception as e:
+            logger.warning(f"Could not fetch Facebook DMs: {e}")
         return items
 
     def _get_notifications(self, page) -> list:
@@ -188,10 +248,45 @@ class FacebookWatcher(BaseWatcher):
         return items
 
     def create_action_file(self, item: dict) -> Path:
+        """Create action file for a Facebook item.
+
+        DMs with no business keywords get an auto-reply and are logged to
+        Done/ without entering the review queue.  Everything else (keyword
+        DMs and all notifications) goes to Needs_Action/ as before.
+        """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"FACEBOOK_{item['type'].upper()}_{timestamp}_{item['id'][:8]}.md"
         keywords = item.get("keywords", [])
         priority = "high" if keywords else "normal"
+        sender = item.get("sender", "")
+
+        # ── Auto-reply path: Messenger DM with no business keywords ────────
+        if item["type"] == "dm" and not keywords:
+            done_dir = self.vault_path / "Done"
+            done_dir.mkdir(exist_ok=True)
+            done_file = done_dir / filename
+
+            if self.dry_run:
+                logger.info(f"[DRY RUN] Would auto-reply to Facebook DM from: {sender}")
+            else:
+                result = FacebookWatcher.send_messenger_reply(
+                    str(self.session_path), sender=sender, reply_text=FACEBOOK_AUTO_REPLY
+                )
+                success = result.get("success", False)
+                done_file.write_text(
+                    f"---\ntype: facebook_auto_replied\nsender: {sender}\n"
+                    f"created: {datetime.now().isoformat()}\nauto_reply_sent: {success}\n---\n\n"
+                    f"Auto-replied to Facebook Messenger DM (no business keywords detected).\n\n"
+                    f"**Reply sent:** {FACEBOOK_AUTO_REPLY}\n"
+                )
+                self.log_event("facebook_auto_reply_sent", {
+                    "sender": sender, "success": success, "file": filename,
+                })
+
+            self._processed_ids.add(item["id"])
+            self._save_processed()
+            return done_file
+        # ───────────────────────────────────────────────────────────────────
 
         content = f"""---
 type: facebook_{item['type']}
@@ -200,6 +295,7 @@ id: {item['id']}
 received: {item.get("timestamp", datetime.now().isoformat())}
 priority: {priority}
 status: pending
+sender: {sender}
 keywords_detected: {", ".join(keywords) if keywords else "none"}
 ---
 
@@ -209,7 +305,7 @@ keywords_detected: {", ".join(keywords) if keywords else "none"}
 {item.get("text", "(no text)")}
 
 ## Suggested Actions
-- [ ] Review the notification
+- [ ] Review the {item['type']}
 - [ ] Draft response (create in /Pending_Approval/ for HITL)
 - [ ] Archive after processing
 
@@ -280,6 +376,85 @@ keywords_detected: {", ".join(keywords) if keywords else "none"}
 
                 browser.close()
                 return {"success": False, "error": "Could not find post composer"}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    @classmethod
+    def send_messenger_reply(cls, session_path: str, sender: str, reply_text: str) -> dict:
+        """
+        Send a reply to a Facebook Messenger conversation.
+
+        Navigates to facebook.com/messages/, finds the thread by sender name,
+        and sends the reply text.
+
+        Args:
+            session_path: Path to persistent Chromium session directory
+            sender:       Display name of the conversation sender
+            reply_text:   Text to send as the reply
+
+        Returns:
+            dict with "success" bool and optional "error" key
+        """
+        if not PLAYWRIGHT_AVAILABLE:
+            return {"success": False, "error": "Playwright not available"}
+
+        session = Path(session_path)
+        if not session.exists():
+            return {"success": False, "error": f"Session not found: {session_path}"}
+
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch_persistent_context(
+                    str(session),
+                    headless=True,
+                    args=["--no-sandbox", "--disable-dev-shm-usage"],
+                )
+                page = browser.pages[0] if browser.pages else browser.new_page()
+                page.goto("https://www.facebook.com/messages/", wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(4000)
+
+                # Find conversation thread by sender name
+                THREAD_SELECTORS = [
+                    '[role="row"]',
+                    '[role="listitem"]',
+                    'div[data-testid="mwthreadlist-item"]',
+                    'a[href*="/messages/t/"]',
+                ]
+                target_thread = None
+                for sel in THREAD_SELECTORS:
+                    threads = page.query_selector_all(sel)
+                    for thread in threads:
+                        try:
+                            if sender.lower() in thread.inner_text().lower():
+                                target_thread = thread
+                                break
+                        except Exception:
+                            continue
+                    if target_thread:
+                        break
+
+                if not target_thread:
+                    browser.close()
+                    return {"success": False, "error": f"Thread for '{sender}' not found"}
+
+                target_thread.click()
+                page.wait_for_timeout(2000)
+
+                # Find message input box
+                input_box = page.query_selector('[contenteditable="true"][role="textbox"]')
+                if not input_box:
+                    browser.close()
+                    return {"success": False, "error": "Message input box not found"}
+
+                input_box.fill(reply_text)
+                page.wait_for_timeout(500)
+                page.keyboard.press("Enter")
+                page.wait_for_timeout(2000)
+
+                browser.close()
+                logger.info(f"Facebook Messenger reply sent to: {sender}")
+                return {"success": True, "sender": sender}
+
         except Exception as e:
             return {"success": False, "error": str(e)}
 
